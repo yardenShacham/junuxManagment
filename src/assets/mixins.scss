@@ -1,0 +1,23 @@
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin spinner($size: 20px, $speed: 1s, $backgroundColor: #cccccc, $foregroundColor: #295a85) {
+  border: $size / 7 solid $backgroundColor;
+  border-radius: 50%;
+  border-top: $size / 7 solid $foregroundColor;
+  width: $size;
+  height: $size;
+  animation: loader-spin $speed linear infinite;
+}
