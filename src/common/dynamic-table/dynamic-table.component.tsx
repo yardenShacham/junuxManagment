@@ -1,58 +1,58 @@
 import * as React from "react";
-import {camelCase, forEach} from 'lodash'
+import {startCase, forEach, uniq} from 'lodash';
+import {dynamicTableService} from './dynamic-table-service'
 import {appInjector} from '../../core/appInjector';
 
 
 export class DynamicTable extends React.Component<any> {
+    keys: string[] = [];
+    props: any
+    dService: dynamicTableService
 
-    componentDidMount() {
+    constructor() {
+        super();
+        this.dService = new dynamicTableService();
+    }
 
+    componentWillMount() {
+        this.keys = this.dService.getKeys(this.props.data)
     }
 
 
     getHeader(data: any): any[] {
-        let keys = Object.keys(data);
         let coulmns: any[] = [];
-        for (let i = 0; i < keys.length; i++) {
-            coulmns.push((<div key={i} className="cell">{camelCase(keys[i])}</div>));
+        for (let i = 0; i < this.keys.length; i++) {
+            coulmns.push((<div key={i} className="cell">{startCase(this.keys[i])}</div>));
         }
         return coulmns;
     }
 
-    getTableContent(data: any) {
+    getTableContent(data: any[]) {
         let rows: any[] = [];
-        forEach(data, (row) => {
-            rows.concat(this.setRowContent(row));
+        forEach(data, (row: any, i: number) => {
+            let cells = this.setRowContent(row, i);
+            rows = rows.concat(cells);
         });
         return rows;
     }
 
-    setRowContent(rowData: any) {
-        let keys = Object.keys(rowData);
-        let startFrom = keys.length;
-        let coulmns: any[] = [];
-        for (let i = 0; i < keys.length; i++) {
-            coulmns.push((<div key={startFrom + i} className="cell">{rowData[keys[i]]}</div>));
-        }
-        return coulmns;
+    setRowContent = (rowData: any, rowNumber: number) => {
+        let cells: any[] = [];
+        forEach(this.keys, (key: string, i: number) => {
+            let val = rowData[key];
+            if (val) {
+                cells.push(<div key={`${rowNumber}${i}`} className="cell">{val}</div>);
+            }
+            else {
+                cells.push(<div key={`${rowNumber}${i}`} className="cell"></div>);
+            }
+        });
+
+        return cells;
     }
 
     render() {
-        const data = [{
-            firstName: "yarden",
-            lastName: "shacham",
-            phoneNumber: "0524806473",
-            phoneNumber1: "0524806473",
-            phoneNumber2: "0524806473",
-            phoneNumber3: "0524806473"
-        },{
-            firstName: "yarden",
-            lastName: "shacham",
-            phoneNumber: "0524806473",
-            phoneNumber1: "0524806473",
-            phoneNumber2: "0524806473",
-            phoneNumber3: "0524806473"
-        }];
+        const {data} = this.props;
         const configuration = {
             header: {
                 backgroundColor: "green",
@@ -65,16 +65,18 @@ export class DynamicTable extends React.Component<any> {
                 fontSize: "20px"
             }
         }
-        appInjector.get("styleService")
-            .setStyleListener("--colNum", () => Object.keys(data).length);
-        return (
-            <div className="dynamic-table">
-                <div className="header">
-                    {this.getHeader(data)}
-                </div>
-                <div className="content">
-                    {this.getTableContent(data)}
-                </div>
-            </div>);
+        if (data) {
+            appInjector.get("styleService")
+                .setStyleListener("--colNum", () => this.keys.length);
+            return (
+                <div className="dynamic-table">
+                    <div className="header">
+                        {this.getHeader(data)}
+                    </div>
+                    <div className="content">
+                        {this.getTableContent(data)}
+                    </div>
+                </div>);
+        }
     }
 }
