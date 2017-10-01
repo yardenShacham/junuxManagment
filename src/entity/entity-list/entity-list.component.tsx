@@ -19,7 +19,7 @@ export class EntityList extends React.Component<any> {
         }, {
             firstName: "yarden",
             lastName: "shacham",
-            phoneNumber: "0524806473",
+            phoneNumber: "0524806473  0524806473 0524806473 0524806473 0524806473 ",
             phoneNumber1: "0524806473",
             phoneNumber2: "0524806473",
             phoneNumber3: "0524806473"
