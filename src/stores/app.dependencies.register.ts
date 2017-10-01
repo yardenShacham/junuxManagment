@@ -1,9 +1,11 @@
-import {TestService} from '../core/testService'
+import {StyleService} from '../core/styleService'
+import {appInjector} from '../core/appInjector';
 
-export function registerDependencies(injector: any) {
+
+export function registerDependencies() {
     return new Promise((resolve, reject) => {
-        if (injector) {
-            injector.registerSingleton("testService", TestService);
+        if (appInjector) {
+            appInjector.registerSingleton("styleService", StyleService);
             resolve();
         }
         else {
@@ -11,3 +13,7 @@ export function registerDependencies(injector: any) {
         }
     });
 }
+
+
+
+

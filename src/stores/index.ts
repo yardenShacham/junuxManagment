@@ -1,12 +1,19 @@
 import {configureStores} from './store.helpers';
 import initialState from './state.defaults';
-import {injector} from 'jx-injector';
 import {registerDependencies} from './app.dependencies.register';
 
 let stores: any
-registerDependencies(injector).then(() => {
-    stores = configureStores(injector, initialState);
+let promise = registerDependencies().then(() => {
+    return configureStores(initialState);
 });
 
 
-export default stores;
+export function getStores() {
+    if (stores) {
+        return new Promise((resolve, reject) => {
+            resolve(stores);
+        });
+    }
+    else
+        return promise;
+};

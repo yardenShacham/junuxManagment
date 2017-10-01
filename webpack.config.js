@@ -74,10 +74,10 @@ module.exports = {
             title: 'Junux Managment',
             filename: 'index.html',
             template: 'index.html'
-        })/*,
+        }),
         new ExtractTextPlugin({
             filename: "[name].[hash].css",
             allChunks: true
-        })*/
+        })
     ]
 };

@@ -4,7 +4,7 @@ import {Router} from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 import {useStrict} from 'mobx';
 import {Provider} from 'mobx-react';
-import stores from './stores';
+import {getStores} from './stores';
 import {App, startApp} from "./app";
 import {ErrorPage} from "./common/errorPage";
 
@@ -14,18 +14,20 @@ startApp().then((success: any) => {
     const history = createBrowserHistory();
 
     if (location.pathname === '/') {
-        history.push("/hotels");
+        history.push("/home");
     }
 
     if (success) {
-        render(
-            <Provider {...stores}>
-                <Router history={history}>
-                    <App/>
-                </Router>
-            </Provider>,
-            document.getElementById("app")
-        );
+        getStores().then((stores: any) => {
+            render(
+                <Provider {...stores}>
+                    <Router history={history}>
+                        <App/>
+                    </Router>
+                </Provider>,
+                document.getElementById("app")
+            );
+        });
     }
 }).catch((error: any) => {
     render(

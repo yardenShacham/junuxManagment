@@ -1,0 +1,39 @@
+:root {
+  --colNum: 5;
+
+  --headerBackgroundColor: black;
+  --headerBorderColor: transparent;
+  --headerColor: white;
+  --headerFontSize: 20px;
+
+  --backgroundColor: white;
+  --borderColor: transparent;
+  --color: black;
+  --fontSize: 20px;
+}
+
+.dynamic-table {
+  .header {
+    display: grid;
+    grid-template-columns: repeat(var(--colNum), 1fr);
+    .cell {
+      background-color: var(--headerBackgroundColor);
+      border: 0.5px solid var(--headerBorderColor);
+      color: var(--headerColor);
+      font-size: var(--headerFontSize);
+      width: 100%;
+    }
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: repeat(var(--colNum), 1fr);
+    .cell {
+      background-color: var(--backgroundColor);
+      border: 1px solid var(--borderColor);
+      color: var(--color);
+      font-size: var(--fontSize);
+      width: 100%;
+    }
+  }
+}

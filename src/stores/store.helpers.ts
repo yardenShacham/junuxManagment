@@ -1,7 +1,7 @@
 import {getAppStore} from './app.store';
 
-export function configureStores(injector: any, initialState: any) {
-    const appStore = getAppStore(injector, initialState);
+export function configureStores(initialState: any) {
+    const appStore = getAppStore(initialState);
 
     return {
         appStore
