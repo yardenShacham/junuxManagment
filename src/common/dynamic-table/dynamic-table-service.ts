@@ -9,4 +9,9 @@ export class dynamicTableService {
 
         return orderBy(uniq(keys));
     }
+
+
+    shika(){
+
+    }
 }

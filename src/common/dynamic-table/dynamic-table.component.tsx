@@ -1,7 +1,9 @@
 import * as React from "react";
-import {startCase, forEach, uniq} from 'lodash';
+import {startCase, forEach, findIndex} from 'lodash';
+import {Jsx} from '../../app.types';
 import {dynamicTableService} from './dynamic-table-service'
 import {appInjector} from '../../core/appInjector';
+import {TableStyles, Options, Configurations} from './configuration';
 
 
 export class DynamicTable extends React.Component<any> {
@@ -19,16 +21,28 @@ export class DynamicTable extends React.Component<any> {
     }
 
 
-    getHeader(data: any): any[] {
-        let coulmns: any[] = [];
+    getHeader(data: any): Jsx[] {
+
+        let coulmns: Jsx[] = [];
         for (let i = 0; i < this.keys.length; i++) {
             coulmns.push((<div key={i} className="cell">{startCase(this.keys[i])}</div>));
         }
         return coulmns;
     }
 
-    getTableContent(data: any[]) {
-        let rows: any[] = [];
+    getHeaderByOptions(data: any, options: Options[]) {
+        let headerCoulmns: any
+        forEach(options, (o: Options) => {
+            headerCoulmns.push(this.getHeaderByOption(data, o))
+        });
+    }
+
+    getHeaderByOption(data: any, options: Options) {
+
+    }
+
+    getTableContent(data: any[]): Jsx[] {
+        let rows: Jsx[] = [];
         forEach(data, (row: any, i: number) => {
             let cells = this.setRowContent(row, i);
             rows = rows.concat(cells);
@@ -36,8 +50,44 @@ export class DynamicTable extends React.Component<any> {
         return rows;
     }
 
-    setRowContent = (rowData: any, rowNumber: number) => {
-        let cells: any[] = [];
+    getTableContentByOptions(data: any, options: Options[]) {
+
+    }
+
+    setStyles(styles: TableStyles) {
+
+        let setSpesificStyle = (propName: string, style: any) => {
+            if (style)
+                appInjector.get("styleService")
+                    .setStyleListener(`--${propName}`, () => style);
+        };
+
+        if (styles) {
+            if (styles.header) {
+                setSpesificStyle("headerBackgroundColor", styles.header.backgroundColor);
+                setSpesificStyle("headerColor", styles.header.color);
+                setSpesificStyle("headerFontSize", styles.header.fontSize);
+                setSpesificStyle("headerBorder", styles.header.border);
+                setSpesificStyle("cornersRadius", styles.header.cornersRadius);
+                setSpesificStyle("headerMinHeight", styles.header.minHeight);
+            }
+            if (styles.content) {
+                setSpesificStyle("borderSidesRull", styles.content.borderSidesRull);
+                if (styles.content.cell) {
+                    setSpesificStyle("color", styles.content.cell.color);
+                    setSpesificStyle("fontSize", styles.content.cell.fontSize);
+                    setSpesificStyle("backgroundColor", styles.content.cell.backgroundColor);
+                    setSpesificStyle("minHeight", styles.content.cell.minHeight);
+                    setSpesificStyle("cellBorderBottom", styles.content.cell.borderBottom);
+                    setSpesificStyle("cellBorderLeft", styles.content.cell.borderLeft);
+                    setSpesificStyle("cellBorderRight", styles.content.cell.borderRight);
+                }
+            }
+        }
+    }
+
+    setRowContent = (rowData: any, rowNumber: number): Jsx[] => {
+        let cells: Jsx[] = [];
         forEach(this.keys, (key: string, i: number) => {
             let val = rowData[key];
             if (val) {
@@ -53,30 +103,34 @@ export class DynamicTable extends React.Component<any> {
 
     render() {
         const {data} = this.props;
-        const configuration = {
-            header: {
-                backgroundColor: "green",
-                color: "white",
-                fontSize: "20px"
-            },
-            content: {
-                backgroundColor: "yellow",
-                color: "black",
-                fontSize: "20px"
-            }
-        }
+        let configurations: Configurations = this.props.configurations;
+
         if (data) {
             appInjector.get("styleService")
                 .setStyleListener("--colNum", () => this.keys.length);
-            return (
-                <div className="dynamic-table">
-                    <div className="header">
-                        {this.getHeader(data)}
-                    </div>
-                    <div className="content">
-                        {this.getTableContent(data)}
-                    </div>
-                </div>);
         }
+        if (configurations) {
+            this.setStyles(configurations.styles);
+        }
+        let headerCoulmns: any = configurations.options &&
+        findIndex(configurations.options, (o: Options) => o.header ? true : false) !== -1 ?
+            this.getHeaderByOptions(data, configurations.options) :
+            this.getHeader(data);
+
+        let cells: any = configurations.options &&
+        findIndex(configurations.options, (o: Options) => o.content ? true : false) !== -1 ?
+            this.getTableContentByOptions(data, configurations.options) :
+            this.getTableContent(data);
+
+        return (
+            <div className="dynamic-table">
+                <div className="header">
+                    {headerCoulmns}
+                </div>
+                <div className="content">
+                    {cells}
+                </div>
+            </div>);
+
     }
 }
