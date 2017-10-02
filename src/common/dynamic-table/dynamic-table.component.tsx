@@ -1,9 +1,16 @@
 import * as React from "react";
-import {startCase, forEach, findIndex} from 'lodash';
+import {
+    startCase,
+    forEach,
+    findIndex,
+    isFunction,
+    isString,
+    orderBy
+} from 'lodash';
 import {Jsx} from '../../app.types';
+import {TableStyles, Options, Configurations} from './configuration';
 import {dynamicTableService} from './dynamic-table-service'
 import {appInjector} from '../../core/appInjector';
-import {TableStyles, Options, Configurations} from './configuration';
 
 
 export class DynamicTable extends React.Component<any> {
@@ -31,14 +38,31 @@ export class DynamicTable extends React.Component<any> {
     }
 
     getHeaderByOptions(data: any, options: Options[]) {
-        let headerCoulmns: any
+        let headerCoulmns: any[] = [];
+        let i = 0;
         forEach(options, (o: Options) => {
-            headerCoulmns.push(this.getHeaderByOption(data, o))
+            let coulmn = this.getHeaderByOption(data, o, i);
+            headerCoulmns.push(coulmn);
+            i++;
         });
+
+        return orderBy(headerCoulmns, ["order"], "asc").map((item: any) => item.html);
     }
 
-    getHeaderByOption(data: any, options: Options) {
+    getHeaderByOption(data: any, options: Options, headerNumber: number) {
+        let header: any;
+        if (isString(options.header)) {
+            header = (<div key={headerNumber} className="cell">{options.header}</div>);
+        }
+        else if (isFunction(options.header)) {
+            let label = options.header(data);
+            header = (<div key={headerNumber} className="cell">{label}</div>);
+        }
 
+        return {
+            html: header,
+            order: options.order ? options.order : headerNumber
+        };
     }
 
     getTableContent(data: any[]): Jsx[] {
@@ -51,7 +75,12 @@ export class DynamicTable extends React.Component<any> {
     }
 
     getTableContentByOptions(data: any, options: Options[]) {
-
+        let cells: Jsx[] = [];
+        forEach(data, (item: any, i: number) => {
+            let row = this.setRowContentByOptions(item, i, options);
+            cells = cells.concat(row);
+        });
+        return cells;
     }
 
     setStyles(styles: TableStyles) {
@@ -65,6 +94,7 @@ export class DynamicTable extends React.Component<any> {
         if (styles) {
             if (styles.header) {
                 setSpesificStyle("headerBackgroundColor", styles.header.backgroundColor);
+                setSpesificStyle("headerOpacity", styles.header.opacity);
                 setSpesificStyle("headerColor", styles.header.color);
                 setSpesificStyle("headerFontSize", styles.header.fontSize);
                 setSpesificStyle("headerBorder", styles.header.border);
@@ -77,6 +107,7 @@ export class DynamicTable extends React.Component<any> {
                     setSpesificStyle("color", styles.content.cell.color);
                     setSpesificStyle("fontSize", styles.content.cell.fontSize);
                     setSpesificStyle("backgroundColor", styles.content.cell.backgroundColor);
+                    setSpesificStyle("opacity", styles.content.cell.opacity);
                     setSpesificStyle("minHeight", styles.content.cell.minHeight);
                     setSpesificStyle("cellBorderBottom", styles.content.cell.borderBottom);
                     setSpesificStyle("cellBorderLeft", styles.content.cell.borderLeft);
@@ -101,14 +132,35 @@ export class DynamicTable extends React.Component<any> {
         return cells;
     }
 
+    setRowContentByOptions(rowData: any, rowNumber: number, options: Options[]) {
+        let rowCells: Jsx[] = [];
+        forEach(options, (o: Options, i: number) => {
+            if (o.content) {
+                if (isFunction(o.content.getValue)) {
+                    let val = o.content.getValue(rowData);
+                    if (val) {
+                        rowCells
+                            .push(<div key={`${rowNumber}${i}`} className="cell">{val}</div>);
+                    }
+                    else
+                        rowCells.push(<div key={`${rowNumber}${i}`} className="cell"></div>);
+                }
+                else {
+                    if (isFunction(o.content.displayValue)) {
+                        let displayValue = o.content.displayValue(rowData);
+                        rowCells
+                            .push(<div key={`${rowNumber}${i}`} className="cell">{displayValue}</div>);
+                    }
+                }
+            }
+        });
+        return rowCells;
+    }
+
     render() {
         const {data} = this.props;
         let configurations: Configurations = this.props.configurations;
 
-        if (data) {
-            appInjector.get("styleService")
-                .setStyleListener("--colNum", () => this.keys.length);
-        }
         if (configurations) {
             this.setStyles(configurations.styles);
         }
@@ -121,7 +173,10 @@ export class DynamicTable extends React.Component<any> {
         findIndex(configurations.options, (o: Options) => o.content ? true : false) !== -1 ?
             this.getTableContentByOptions(data, configurations.options) :
             this.getTableContent(data);
-
+        if (data) {
+            appInjector.get("styleService")
+                .setStyleListener("--colNum", () => headerCoulmns.length);
+        }
         return (
             <div className="dynamic-table">
                 <div className="header">

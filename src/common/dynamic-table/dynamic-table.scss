@@ -3,12 +3,14 @@
 :root {
   --colNum: 5;
   //header
+
   --headerBackgroundColor: $pain-grey;
   --headerColor: white;
   --headerFontSize: 20px;
   --cornersRadius: 6px;
   --headerMinHeight: 50px;
   --headerBorder: none;
+  --headerOpacity: 1;
   //content
   --borderSidesRull: 0.5px solid $pain-grey;
   --color: white;
@@ -17,6 +19,7 @@
   //cell
   --minHeight: 40px;
   --backgroundColor: transparent;
+  --opacity: 1;
   --cellBorderLeft: none;
   --cellBorderRight: none;
   --cellBorderBottom: var(--borderSidesRull);
@@ -29,6 +32,7 @@ body {
 .dynamic-table {
   .header {
     background-color: var(--headerBackgroundColor);
+    opacity: var(--headerOpacity);
     border-top-left-radius: var(--cornersRadius);
     border-top-right-radius: var(--cornersRadius);
     border: var(--headerBorder);
@@ -51,6 +55,7 @@ body {
     border-right: var(--borderSidesRull);
     .cell {
       background-color: var(--backgroundColor);
+      opacity: var(--opacity);
       border-bottom: var(--cellBorderBottom);
       border-left: var(--cellBorderLeft);
       border-right: var(--cellBorderRight);

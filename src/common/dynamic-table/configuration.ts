@@ -7,7 +7,7 @@ export interface Options {
     order?: number
     header?: (value: any) => any,
     content?: {
-        getValue: (data: any) => any,
+        getValue?: (data: any) => any,
         displayValue?: (value: any) => any
     }
 }
@@ -16,6 +16,7 @@ export interface TableStyles {
     header?: {
         backgroundColor?: string,
         color?: string,
+        opacity?: string
         fontSize?: string
         minHeight?: string
         cornersRadius?: string
@@ -25,6 +26,7 @@ export interface TableStyles {
         borderSidesRull?: string,
         cell?: {
             backgroundColor?: string,
+            opacity?: string,
             color?: string,
             fontSize?: string,
             minHeight?: string,
