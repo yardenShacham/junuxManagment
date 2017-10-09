@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {Route, Switch} from "react-router"
+import AuthRoute from '../core/authRoute';
 import {Entity} from './entity.component';
 import {NotFound} from '../common/notFound';
 
 let entetiesRoutesArray: any = [];
 
-export const route = (<Route path="/entities" render={(props) => <Entity {...props} />}/>);
+export const route = (<AuthRoute path="/entities" component={Entity}/>);
 
 export function addRoute(route: any) {
     entetiesRoutesArray.push(route);

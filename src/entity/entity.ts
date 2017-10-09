@@ -1,0 +1,25 @@
+import {IdNameContainer} from '../app.types';
+
+export interface Entity {
+    fields: Field[]
+    pages: PageInfo[]
+}
+
+export interface PageInfo {
+    pageId: number
+    pageTitle: string
+}
+
+export interface Field {
+    id: string
+    type: IdNameContainer<number>
+    name: string
+    rulls: FieldRulls
+}
+
+export interface FieldRulls {
+    maxLength: number
+    largerThen: number
+    smallerThen: number
+    customValidation: any
+}

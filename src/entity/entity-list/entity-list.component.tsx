@@ -4,16 +4,18 @@ import {DynamicTable, Configurations} from '../../common/dynamic-table';
 import {Link} from 'react-router-dom';
 import {MessageIcon} from '../../common/show-message-icon';
 
-@observer
+@inject('entityStore') @observer
 export class EntityList extends React.Component<any> {
 
+    componentWillMount() {
+        this.props.entityStore.getEntities();
+    }
 
     componentDidMount() {
     }
 
     render() {
         let data = [{
-            myLove: "sivan",
             lastName: "shacham",
             phoneNumber1: "0524806473",
             phoneNumber2: "0524806473",
@@ -33,60 +35,25 @@ export class EntityList extends React.Component<any> {
             phoneNumber3: "0524806473"
         }];
         let configurations: Configurations = {
-            options: [{
-                header: (val) => "First Name",
-                content: {
-                    getValue: (val: any) => val.firstName
-                }
-            }, {
-                order: 4,
-                header: (val) => "Test 1",
-                content: {
-                    getValue: (val: any) => val.lastName
-                }
-            }, {
-                order: 3,
-                header: (val) => "Test 2",
-                content: {
-                    getValue: (val: any) => val.lastName
-                }
-            }, {
-                order: 2,
-                header: (val) => "Test 3",
-                content: {
-                    getValue: (val: any) => val.lastName
-                }
-            }, {
-                order: 1,
-                header: (val) => "Test 4",
-                content: {
-                    getValue: (val: any) => val.lastName
-                }
-            }, {
-                header: (val) => "",
-                content: {
-                    displayValue: (val: any) =>
-                        (<MessageIcon message={val.phoneNumber}></MessageIcon>)
-                }
-            }],
+
             styles: {
                 header: {
-                    backgroundColor: "#66D4AF",
+                    backgroundColor: "black",
                     color: "white",
-                    fontSize: "20px",
+                    fontSize: "15px",
                     border: "",
                     cornersRadius: "",
-                    minHeight: ""
+                    minHeight: "40px"
                 },
                 content: {
-                    borderSidesRull: "0.5px solid #66D4AF",
+                    borderSidesRull: "0.5px solid black",
                     cell: {
-                        backgroundColor: "purple",
+                        backgroundColor: "transparent",
                         opacity: "",
-                        color: "white",
-                        fontSize: "20px",
+                        color: "black",
+                        fontSize: "15px",
                         minHeight: "",
-                        borderBottom: "",
+                        borderBottom: "0.5px solid black",
                         borderLeft: "",
                         borderRight: ""
                     }
@@ -96,6 +63,7 @@ export class EntityList extends React.Component<any> {
         return (
             <div>
                 <h2>EntityList</h2>
+                {this.props.entityStore.entities}
                 <DynamicTable data={data} configurations={configurations}></DynamicTable>
             </div>);
     }

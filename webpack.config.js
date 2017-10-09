@@ -4,6 +4,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -42,7 +43,14 @@ module.exports = {
             {
                 test: /\.(ico|png|gif|jpg|svg)$/i,
                 use: [
-                    'file-loader?name=fonts/[name].[ext]',
+                    {
+                        loader:'file-loader',
+                        options:{
+                            name:'[name].[ext]',
+                            outputPath:'src/assets/images',
+                            publicPath:'src/assets/images'
+                        }
+                    },
                     'image-webpack-loader'
                 ]
             }, {
@@ -78,6 +86,9 @@ module.exports = {
         new ExtractTextPlugin({
             filename: "[name].[hash].css",
             allChunks: true
-        })
+        }),
+        new CopyWebpackPlugin([
+            {from: './src/assets/images', to: 'src/assets/images'}
+        ]),
     ]
 };

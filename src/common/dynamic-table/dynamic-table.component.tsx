@@ -27,7 +27,6 @@ export class DynamicTable extends React.Component<any> {
         this.keys = this.dService.getKeys(this.props.data)
     }
 
-
     getHeader(data: any): Jsx[] {
 
         let coulmns: Jsx[] = [];

@@ -10,8 +10,7 @@ export class Entity extends React.Component<any> {
 
     render() {
         return (
-            <div style={{padding: "40px"}}>
-                <h1>Entity global component</h1>
+            <div style={{padding: "20px"}}>
                 {entetiesRoutes}
             </div>);
     }
