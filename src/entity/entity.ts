@@ -1,5 +1,8 @@
 import {IdNameContainer} from '../app.types';
-
+export const FieldState = {
+    CREATED: 1,
+    EDITABLE: 2
+}
 export interface Entity {
   /*  entityId: any
     fields: Field[]

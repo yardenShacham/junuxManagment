@@ -1,4 +1,4 @@
-import {Entity} from '../entity';
+import {Entity, FieldState} from '../entity';
 import {appInjector} from '../core/appInjector';
 import {action, runInAction, autorun, observable} from 'mobx';
 import {map} from 'lodash'
@@ -8,8 +8,10 @@ class EntityStore {
 
     @observable entities: Entity[] = []
     @observable currentEntity: any
+    @observable typeNames: any
 
     constructor(initialStore: any) {
+        this.typeNames = appInjector.get('entityService').getTypeEnum();
     }
 
     @action
@@ -25,13 +27,33 @@ class EntityStore {
 
 
     @action
+    addFieldName(fieldName: string) {
+        this.currentEntity.fields.unshift({
+            state: FieldState.EDITABLE,
+            name: fieldName,
+            input: null
+        });
+    }
+
+    @action
+    addInputById(fieldId: number, inputId: number) {
+        let foundIndex = this.currentEntity.fields.findIndex((field: any) => field.fieldId === fieldId);
+        this.currentEntity.fields[foundIndex].input = {
+            inputId: inputId
+        }
+    }
+
+    @action
     async getEntityById(id: number) {
         let currentEntity = await appInjector.get('entityService').getEntityById(id);
+        currentEntity.fields = currentEntity.fields.map((field: any) => {
+            field.state = FieldState.CREATED;
+            return field;
+        });
         runInAction(() => {
             this.currentEntity = currentEntity;
         });
     }
-
 
 }
 

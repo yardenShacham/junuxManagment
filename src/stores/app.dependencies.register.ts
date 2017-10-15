@@ -21,6 +21,7 @@ export function registerDependencies() {
 class entityServiceMock {
 
     allEntities: any
+    inputTypes: any
 
     constructor() {
         this.allEntities = {
@@ -29,6 +30,22 @@ class entityServiceMock {
                 name: "Users"
             }
         }
+        this.inputTypes = {
+            1: "Text",
+            2: "Number",
+            3: "Checkbox",
+            4: "Password",
+            5: "Radio",
+            6: "File",
+            7: "Date",
+            8: "Time",
+            9: "Days Of Week",
+            10: "Sub Entity"
+        }
+    }
+
+    getTypeEnum() {
+        return this.inputTypes;
     }
 
     getEnteties(uid: any) {
@@ -70,6 +87,16 @@ class entityServiceMock {
             },
             name: "Location"
         }];
+        for (let i = 0; i < 20; i++) {
+            fields.push({
+                fieldId: 100 + i,
+                input: {
+                    inputId: 1,
+                    inputType: 1
+                },
+                name: "First Name " + i
+            });
+        }
         entity.fields = fields;
         return Promise.resolve(entity);
     }
