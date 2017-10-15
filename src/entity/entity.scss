@@ -1,6 +1,39 @@
 .entity-container {
   padding: 20px;
   width: 65%;
+  .spesific-entity {
+    color: white;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    .add-new-field-container {
+      display: flex;
+      margin-bottom: 30px;
+      margin-left: 35px;
+
+      input {
+        width: 50%;
+        margin-left: 10px;
+      }
+    }
+    .field-list {
+      .field-list-item {
+        display: flex;
+        font-size: 20px;
+        justify-content: space-around;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 20px;
+        border-top-left-radius: 100px;
+        border-bottom-left-radius: 100px;
+        border: 1px solid white;
+        height: 90px;
+        .glyphicon-link {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
   .entity-list {
     h2 {
       color: white;
@@ -8,7 +41,7 @@
     .dynamic-table {
       width: 75%;
       .content {
-        .cell{
+        .cell {
           margin-top: 5px;
         }
       }

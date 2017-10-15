@@ -7,6 +7,7 @@ import {map} from 'lodash'
 class EntityStore {
 
     @observable entities: Entity[] = []
+    @observable currentEntity: any
 
     constructor(initialStore: any) {
     }
@@ -25,7 +26,10 @@ class EntityStore {
 
     @action
     async getEntityById(id: number) {
-
+        let currentEntity = await appInjector.get('entityService').getEntityById(id);
+        runInAction(() => {
+            this.currentEntity = currentEntity;
+        });
     }
 
 
