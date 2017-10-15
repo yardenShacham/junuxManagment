@@ -22,7 +22,7 @@ startApp().then((success: any) => {
             render(
                 <Provider {...stores}>
                     <Router history={history}>
-                        <App/>
+                        <App history={history}/>
                     </Router>
                 </Provider>,
                 document.getElementById("app")

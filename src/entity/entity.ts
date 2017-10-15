@@ -1,8 +1,9 @@
 import {IdNameContainer} from '../app.types';
 
 export interface Entity {
+  /*  entityId: any
     fields: Field[]
-    pages: PageInfo[]
+    pages: PageInfo[]*/
 }
 
 export interface PageInfo {

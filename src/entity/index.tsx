@@ -1,3 +1,4 @@
+import './entity.scss';
 import entityList from './entity-list'
 import entityEditCreate from './entity-edit-create'
 import {addRoute} from '../app.routes';

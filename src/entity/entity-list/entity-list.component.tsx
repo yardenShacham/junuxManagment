@@ -1,8 +1,6 @@
 import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {DynamicTable, Configurations} from '../../common/dynamic-table';
-import {Link} from 'react-router-dom';
-import {MessageIcon} from '../../common/show-message-icon';
 
 @inject('entityStore') @observer
 export class EntityList extends React.Component<any> {
@@ -13,58 +11,64 @@ export class EntityList extends React.Component<any> {
 
     componentDidMount() {
     }
-
+    goToEdit(entityId:any){
+        this.props.history.push(`/entities/${entityId}`);
+    }
     render() {
-        let data = [{
-            lastName: "shacham",
-            phoneNumber1: "0524806473",
-            phoneNumber2: "0524806473",
-            phoneNumber3: "0524806473"
-        }, {
-            firstName: "yarden",
-            lastName: "shacham",
-            phoneNumber: "0524806473  0524806473 0524806473 0524806473 0524806473 ",
-            phoneNumber1: "0524806473",
-            phoneNumber2: "0524806473",
-            phoneNumber3: "0524806473"
-        }, {
-            phoneNumber: "0524806473",
-            phoneNumber1: "0524806473",
-            firstName: "yarden",
-            lastName: "shacham",
-            phoneNumber3: "0524806473"
-        }];
+        const tableColor = "grey"
         let configurations: Configurations = {
+            options: [{
+                sort:{
+                  sortBy:(data:any) => data.name
+                },
+                header: () => "Entity Name",
+                content: {
+                    getValue: (data: any) => data.name
+                }
+            }, {
+                sort:{
+                    sortBy:(data:any) => data.name
+                },
+                header: () => "Total Fields",
+                content: {
+                    getValue: (data: any) => data.fields.length
+                }
+            }, {
+                header: () => "",
+                content: {
+                    displayValue: (data: any) =>
+                        (<span onClick={this.goToEdit.bind(this,data.entityId)}  className="glyphicon glyphicon-edit"></span>)
+                }
+            }],
 
             styles: {
                 header: {
-                    backgroundColor: "black",
+                    backgroundColor: tableColor,
                     color: "white",
                     fontSize: "15px",
                     border: "",
                     cornersRadius: "",
-                    minHeight: "40px"
+                    minHeight: "35px"
                 },
                 content: {
-                    borderSidesRull: "0.5px solid black",
+                    borderSidesRull: `0.5px solid ${tableColor}`,
                     cell: {
                         backgroundColor: "transparent",
                         opacity: "",
-                        color: "black",
+                        color: "white",
                         fontSize: "15px",
                         minHeight: "",
-                        borderBottom: "0.5px solid black",
-                        borderLeft: "",
+                        borderBottom: `0.5px solid ${tableColor}`,
+                        borderLeft: ``,
                         borderRight: ""
                     }
                 }
             }
         }
         return (
-            <div>
-                <h2>EntityList</h2>
-                {this.props.entityStore.entities}
-                <DynamicTable data={data} configurations={configurations}></DynamicTable>
+            <div className="entity-list">
+                <h2>All Entities</h2>
+                <DynamicTable data={this.props.entityStore.entities} configurations={configurations}></DynamicTable>
             </div>);
     }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Route} from "react-router";
+import AuthRoute from '../../core/authRoute';
 import {EntityList} from './entity-list.component';
 
-export const route = <Route exact path="/entities" render={(props) => <EntityList {...props} />}/>
+export const route = <AuthRoute exact path="/entities" component={EntityList}/>

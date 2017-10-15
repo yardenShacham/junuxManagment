@@ -1,6 +1,10 @@
 @import url('//fonts.googleapis.com/css?family=Roboto:100,200,300,400,500');
 @import "colors";
 @import "mixins";
+body{
+  background: url("/src/assets/images/workforce_management_banner.png") no-repeat;
+  background-size: 100% 100%;
+}
 
 
 

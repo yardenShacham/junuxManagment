@@ -19,10 +19,12 @@ export class App extends React.Component<any> {
         super(props);
     }
 
+    props: any
+
     render() {
         return (
             <div>
-                <Header/>
+                <Header history={this.props.history}/>
                 {Routes}
             </div>);
     }

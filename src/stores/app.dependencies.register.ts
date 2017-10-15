@@ -7,7 +7,7 @@ export function registerDependencies() {
         if (appInjector) {
             appInjector.registerSingleton("styleService", StyleService);
             appInjector.registerSingleton("authService", authService);
-            //  appInjector.registerSingleton("entityService", entityService);
+            appInjector.registerSingleton("entityService", entityService);
 
             resolve();
         }

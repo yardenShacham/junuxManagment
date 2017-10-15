@@ -48,18 +48,37 @@ export class DynamicTable extends React.Component<any> {
         return orderBy(headerCoulmns, ["order"], "asc").map((item: any) => item.html);
     }
 
+    getSortUnit(sortBy: any) {
+        let sortUnit = <span onClick={this.sort.bind(this,sortBy)} className="glyphicon glyphicon-sort"></span>
+        return sortUnit;
+    }
+
     getHeaderByOption(data: any, options: Options, headerNumber: number) {
         let header: any;
         if (isString(options.header)) {
-            header = (<div key={headerNumber} className="cell">{options.header}</div>);
+            header = (sortUnit: any) => {
+                return (
+                    <div key={headerNumber} className={`cell ${sortUnit ? 'with-sort' : ''}`}>
+                        <span>{options.header}</span>
+                        {sortUnit}
+                    </div>
+                )
+            };
         }
         else if (isFunction(options.header)) {
             let label = options.header(data);
-            header = (<div key={headerNumber} className="cell">{label}</div>);
+            header = (sortUnit: any) => {
+                return (
+                    <div key={headerNumber} className={`cell ${sortUnit ? 'with-sort' : ''}`}>
+                        <span>{label}</span>
+                        {sortUnit}
+                    </div>
+                )
+            };
         }
 
         return {
-            html: header,
+            html: options.sort ? header(this.getSortUnit(options.sort.sortBy)) : header(),
             order: options.order ? options.order : headerNumber
         };
     }
@@ -71,6 +90,10 @@ export class DynamicTable extends React.Component<any> {
             rows = rows.concat(cells);
         });
         return rows;
+    }
+
+    sort(getBy: any) {
+        this.props.data = orderBy(this.props.data, getBy, ["asc"]);
     }
 
     getTableContentByOptions(data: any, options: Options[]) {
@@ -99,6 +122,7 @@ export class DynamicTable extends React.Component<any> {
                 setSpesificStyle("headerBorder", styles.header.border);
                 setSpesificStyle("cornersRadius", styles.header.cornersRadius);
                 setSpesificStyle("headerMinHeight", styles.header.minHeight);
+                setSpesificStyle("headerTextAlign", styles.header.textAlign);
             }
             if (styles.content) {
                 setSpesificStyle("borderSidesRull", styles.content.borderSidesRull);
@@ -111,6 +135,8 @@ export class DynamicTable extends React.Component<any> {
                     setSpesificStyle("cellBorderBottom", styles.content.cell.borderBottom);
                     setSpesificStyle("cellBorderLeft", styles.content.cell.borderLeft);
                     setSpesificStyle("cellBorderRight", styles.content.cell.borderRight);
+                    setSpesificStyle("cellTextAlign", styles.content.cell.textAlign);
+
                 }
             }
         }

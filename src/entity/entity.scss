@@ -1,0 +1,21 @@
+.entity-container {
+  padding: 20px;
+  width: 65%;
+  .entity-list {
+    h2 {
+      color: white;
+    }
+    .dynamic-table {
+      width: 75%;
+      .content {
+        .cell{
+          margin-top: 5px;
+        }
+      }
+      .glyphicon-edit {
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+}

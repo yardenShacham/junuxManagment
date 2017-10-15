@@ -3,7 +3,7 @@ import {Redirect, Route} from 'react-router-dom';
 import {appInjector} from '../core/appInjector';
 
 //Mock of an Auth method, can be replaced with an async call to the backend. Must return true or false
-const isAuthenticated = () => appInjector.get('authService').getCurrentUser() ? true : false;
+const isAuthenticated = () => appInjector.get('authService').isAuthenticated();
 
 const PRIVATE_ROOT = '/private';
 const PUBLIC_ROOT = '/login';

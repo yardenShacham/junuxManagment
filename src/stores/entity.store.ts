@@ -1,21 +1,25 @@
-import {Entity} from '../entity'
+import {Entity} from '../entity';
+import {appInjector} from '../core/appInjector';
 import {action, runInAction, autorun, observable} from 'mobx';
+import {map} from 'lodash'
 
 
 class EntityStore {
 
-    @observable entities: Entity[]
+    @observable entities: Entity[] = []
 
     constructor(initialStore: any) {
-
     }
 
     @action
     async getEntities() {
-       /* let a = await  this.entityService.getEnteties();
+        let currentUser = await  appInjector.get('authService').waitForCurrentUser();
+        let entities = await  appInjector.get('entityService').getEnteties(currentUser.uid);
         runInAction(() => {
-            this.entities = a;
-        });*/
+            this.entities = map(entities, (val, key) => {
+                return Object.assign({}, val, {entityId: key});
+            });
+        });
     }
 
 

@@ -11,6 +11,7 @@
   --headerMinHeight: 50px;
   --headerBorder: none;
   --headerOpacity: 1;
+  --headerTextAlign: 'start';
   //content
   --borderSidesRull: 0.5px solid $pain-grey;
   --color: white;
@@ -18,13 +19,13 @@
 
   //cell
   --minHeight: 40px;
+  --cellTextAlign: center;
   --backgroundColor: transparent;
   --opacity: 1;
   --cellBorderLeft: none;
   --cellBorderRight: none;
   --cellBorderBottom: var(--borderSidesRull);
 }
-
 
 .dynamic-table {
   .header {
@@ -37,10 +38,17 @@
     grid-template-columns: repeat(var(--colNum), 1fr);
     grid-auto-rows: minmax(var(--headerMinHeight), auto);
     align-items: center;
+
     .cell {
       color: var(--headerColor);
       font-size: var(--headerFontSize);
       width: 100%;
+      text-align: var(--headerTextAlign);
+      &.with-sort {
+        display: flex;
+        justify-content: space-around;
+        cursor: pointer;
+      }
     }
   }
 
@@ -59,6 +67,7 @@
       color: var(--color);
       font-size: var(--fontSize);;
       width: 100%;
+      text-align: var(--cellTextAlign);
     }
   }
 }

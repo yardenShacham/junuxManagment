@@ -4,6 +4,9 @@ export interface Configurations {
 }
 
 export interface Options {
+    sort?: {
+        sortBy: (value: any) => any
+    }
     order?: number
     header?: (value: any) => any,
     content?: {
@@ -21,6 +24,7 @@ export interface TableStyles {
         minHeight?: string
         cornersRadius?: string
         border?: string
+        textAlign?: string
     },
     content?: {
         borderSidesRull?: string,
@@ -32,7 +36,8 @@ export interface TableStyles {
             minHeight?: string,
             borderBottom?: string,
             borderLeft?: string,
-            borderRight?: string
+            borderRight?: string,
+            textAlign?: string
         }
     }
 }
