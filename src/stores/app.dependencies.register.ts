@@ -69,6 +69,55 @@ class entityServiceMock {
             },
             name: "Last Name"
         }, {
+            fieldId: 61,
+            input: {
+                inputId: 14,
+                inputType: 2
+            },
+            name: "Age"
+        }, {
+            fieldId: 72,
+            input: {
+                inputId: 1354,
+                inputType: 3
+            },
+            name: "Is Male"
+        }, {
+            fieldId: 73,
+            input: {
+                inputId: 1334,
+                inputType: 4
+            },
+            name: "Password"
+        }, {
+            fieldId: 74,
+            input: {
+                inputId: 1324,
+                inputType: 6
+            },
+            name: "Resume"
+        }, {
+            fieldId: 75,
+            input: {
+                inputId: 12,
+                inputType: 7
+            },
+            name: "Date of Birth"
+        }, {
+            fieldId: 735,
+            input: {
+                inputId: 12,
+                inputType: 8
+            },
+            name: "Born time"
+        }, {
+            fieldId: 7215,
+            input: {
+                inputId: 123,
+                inputType: 9
+            },
+            name: "Selected Week"
+        }, {
             fieldId: 5,
             input: {
                 inputId: 3,

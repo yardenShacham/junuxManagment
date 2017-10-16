@@ -1,7 +1,7 @@
 import {Entity, FieldState} from '../entity';
 import {appInjector} from '../core/appInjector';
 import {action, runInAction, autorun, observable} from 'mobx';
-import {map} from 'lodash'
+import {map, reject} from 'lodash'
 
 
 class EntityStore {
@@ -25,6 +25,15 @@ class EntityStore {
         });
     }
 
+    @action
+    removeField(fieldId: any) {
+
+        /*let foundIndex = this.currentEntity.fields.findIndex((field: any) => field.fieldId == fieldId);
+        if (foundIndex !== -1) {
+             this.currentEntity.fields.slice(foundIndex, foundIndex + 1);
+        }*/
+        this.currentEntity.fields = reject(this.currentEntity.fields, (field: any) => field.fieldId === fieldId);
+    }
 
     @action
     addFieldName(fieldName: string) {

@@ -39,7 +39,6 @@
       .field-list-item-edit {
         display: flex;
         font-size: 20px;
-        justify-content: space-around;
         flex-direction: row;
         align-items: center;
         &:not(.last) {
@@ -50,15 +49,27 @@
         border-top-right-radius: 12px;
         border-bottom-right-radius: 12px;
         border: 2px dashed rgba(235, 235, 235, .5);
-        .dragable-input-zone {
-          width: 10%;
+        .field-name {
+          flex: 20%;
+          margin-left: 70px;
+        }
+        .link-icon {
+          flex: 80%;
           display: flex;
-          justify-content: center;
+          justify-content: space-around;
           align-items: center;
-          height: 50%;
-          border: dashed 0.5px rgba(235, 235, 235, .5);
-          span {
-            font-size: 10px;
+          flex-direction: row;
+          .dragable-input-zone {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: -20px;
+            border: dashed 0.5px rgba(235, 235, 235, .5);
+            span {
+              font-size: 10px;
+            }
           }
         }
         height: 90px;
@@ -69,7 +80,6 @@
       .field-list-item {
         display: flex;
         font-size: 20px;
-        justify-content: space-around;
         flex-direction: row;
         align-items: center;
         &:not(.last) {
@@ -82,9 +92,24 @@
         border: 2px solid rgba(235, 235, 235, .5);;
 
         height: 90px;
+        .field-name {
+          flex: 20%;
+          margin-left: 70px;
+        }
+        .link-icon {
+          flex: 80%;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          flex-direction: row;
+        }
         .glyphicon-link {
           font-size: 20px;
         }
+      }
+      .glyphicon-remove {
+        margin-right: 20px;
+        cursor: pointer;
       }
 
     }
@@ -107,4 +132,36 @@
       }
     }
   }
+}
+
+.icon-number {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.icon-number:after {
+  content: '123';
+  font-weight: bold;
+}
+
+.dayOfWeek-icon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.dayOfWeek-icon:after {
+  content: '';
+  width: 2px;
+  background-color: black;
+  padding: 1px;
 }
