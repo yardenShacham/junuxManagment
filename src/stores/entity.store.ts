@@ -1,7 +1,8 @@
 import {Entity, FieldState} from '../entity';
 import {appInjector} from '../core/appInjector';
 import {action, runInAction, autorun, observable} from 'mobx';
-import {map, reject} from 'lodash'
+import {map, reject} from 'lodash';
+import * as Guid from 'guid';
 
 
 class EntityStore {
@@ -9,9 +10,11 @@ class EntityStore {
     @observable entities: Entity[] = []
     @observable currentEntity: any
     @observable typeNames: any
+    @observable allInputs: any[]
 
     constructor(initialStore: any) {
         this.typeNames = appInjector.get('entityService').getTypeEnum();
+        this.allInputs = [{id: 1}];
     }
 
     @action
@@ -27,17 +30,13 @@ class EntityStore {
 
     @action
     removeField(fieldId: any) {
-
-        /*let foundIndex = this.currentEntity.fields.findIndex((field: any) => field.fieldId == fieldId);
-        if (foundIndex !== -1) {
-             this.currentEntity.fields.slice(foundIndex, foundIndex + 1);
-        }*/
-        this.currentEntity.fields = reject(this.currentEntity.fields, (field: any) => field.fieldId === fieldId);
+        this.currentEntity.fields = reject(this.currentEntity.fields, (field: any) => fieldId ? field.fieldId === fieldId : false);
     }
 
     @action
     addFieldName(fieldName: string) {
         this.currentEntity.fields.unshift({
+            fieldId: Guid.raw(),
             state: FieldState.EDITABLE,
             name: fieldName,
             input: null

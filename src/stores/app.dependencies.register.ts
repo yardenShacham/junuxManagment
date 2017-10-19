@@ -1,6 +1,7 @@
 import {StyleService} from '../core/styleService'
 import {appInjector} from '../core/appInjector';
 import {authService, entityService} from 'jx-core/src';
+import * as Guid from 'guid';
 
 export function registerDependencies() {
     return new Promise((resolve, reject) => {
@@ -55,70 +56,70 @@ class entityServiceMock {
     getEntityById(entityId: any) {
         let entity = this.allEntities[entityId];
         let fields = [{
-            fieldId: 1,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 1,
                 inputType: 1
             },
             name: "First Name"
         }, {
-            fieldId: 2,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 1,
                 inputType: 1
             },
             name: "Last Name"
         }, {
-            fieldId: 61,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 14,
                 inputType: 2
             },
             name: "Age"
         }, {
-            fieldId: 72,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 1354,
                 inputType: 3
             },
             name: "Is Male"
         }, {
-            fieldId: 73,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 1334,
                 inputType: 4
             },
             name: "Password"
         }, {
-            fieldId: 74,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 1324,
                 inputType: 6
             },
             name: "Resume"
         }, {
-            fieldId: 75,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 12,
                 inputType: 7
             },
             name: "Date of Birth"
         }, {
-            fieldId: 735,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 12,
                 inputType: 8
             },
             name: "Born time"
         }, {
-            fieldId: 7215,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 123,
                 inputType: 9
             },
             name: "Selected Week"
         }, {
-            fieldId: 5,
+            fieldId: Guid.raw(),
             input: {
                 inputId: 3,
                 inputType: 10,
@@ -136,7 +137,7 @@ class entityServiceMock {
             },
             name: "Location"
         }];
-        for (let i = 0; i < 20; i++) {
+      /*  for (let i = 0; i < 20; i++) {
             fields.push({
                 fieldId: 100 + i,
                 input: {
@@ -145,7 +146,7 @@ class entityServiceMock {
                 },
                 name: "First Name " + i
             });
-        }
+        }*/
         entity.fields = fields;
         return Promise.resolve(entity);
     }

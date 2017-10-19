@@ -1,0 +1,98 @@
+.field-list {
+  height: 60vh;
+  overflow-y: scroll;
+  padding-right: 5px;
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    height: 50px;
+    background-image: -webkit-gradient(linear,
+            left bottom,
+            left top,
+            color-stop(0.44, rgb(122, 153, 217)),
+            color-stop(0.72, rgb(73, 125, 189)),
+            color-stop(0.86, rgb(28, 58, 148)));
+  }
+  .field-list-item-edit {
+    display: flex;
+    font-size: 20px;
+    flex-direction: row;
+    align-items: center;
+    &:not(.last) {
+      margin-bottom: 20px;
+    }
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 2px dashed rgba(235, 235, 235, .5);
+    .field-name {
+      flex: 20%;
+      margin-left: 70px;
+    }
+    .link-icon {
+      flex: 80%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: row;
+      .dragable-input-zone {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: -20px;
+        border: dashed 0.5px rgba(235, 235, 235, .5);
+        span {
+          font-size: 10px;
+        }
+      }
+    }
+    height: 90px;
+    .glyphicon-link {
+      font-size: 20px;
+    }
+  }
+  .field-list-item {
+    display: flex;
+    font-size: 20px;
+    flex-direction: row;
+    align-items: center;
+    &:not(.last) {
+      margin-bottom: 20px;
+    }
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 2px solid rgba(235, 235, 235, .5);;
+
+    height: 90px;
+    .field-name {
+      flex: 20%;
+      margin-left: 70px;
+    }
+    .link-icon {
+      flex: 80%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-direction: row;
+    }
+    .glyphicon-link {
+      font-size: 20px;
+    }
+  }
+  .glyphicon-remove {
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+}
