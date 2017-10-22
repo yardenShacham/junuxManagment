@@ -14,7 +14,7 @@ class EntityStore {
 
     constructor(initialStore: any) {
         this.typeNames = appInjector.get('entityService').getTypeEnum();
-        this.allInputs = [{id: 1}];
+        this.allInputs = [{id: 1, inputType: 5}];
     }
 
     @action
@@ -44,11 +44,21 @@ class EntityStore {
     }
 
     @action
-    addInputById(fieldId: number, inputId: number) {
+    addInputById(fieldId: number, input: any) {
         let foundIndex = this.currentEntity.fields.findIndex((field: any) => field.fieldId === fieldId);
-        this.currentEntity.fields[foundIndex].input = {
-            inputId: inputId
+        this.currentEntity.fields[foundIndex] = {
+            fieldId: this.currentEntity.fields[foundIndex].fieldId,
+            state: this.currentEntity.fields[foundIndex].state,
+            name: this.currentEntity.fields[foundIndex].name,
+            input: {
+                inputId: input.id,
+                inputType: input.inputType
+            }
         }
+    }
+
+    @action createField(field: any){
+
     }
 
     @action

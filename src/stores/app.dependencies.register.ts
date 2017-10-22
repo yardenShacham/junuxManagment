@@ -53,6 +53,10 @@ class entityServiceMock {
         return Promise.resolve(this.allEntities);
     }
 
+    addField(){
+
+    }
+
     getEntityById(entityId: any) {
         let entity = this.allEntities[entityId];
         let fields = [{

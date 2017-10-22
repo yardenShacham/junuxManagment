@@ -8,8 +8,8 @@
     // cursor: move; /* fallback if grab cursor is unsupported */
     cursor: -webkit-grab;
     margin: 10px;
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     display: flex;
     background-color: rgba(235, 50, 235, .5);
     justify-content: center;
@@ -22,5 +22,11 @@
       cursor: -moz-grabbing;
       cursor: -webkit-grabbing;
     }
+  }
+}
+
+.drop-zone {
+  &.active {
+    background-color: #3b5998;
   }
 }

@@ -17,8 +17,13 @@ export class EntityEditCreate extends React.Component<any> {
         this.props.entityStore.addFieldName(fieldName);
     }
 
+    onInputDroped = (input: any, elementDroped: any) => {
+        let fieldId = elementDroped.classList[elementDroped.classList.length - 1];
+        this.props.entityStore.addInputById(fieldId, input);
+    }
+
     render() {
-        let {currentEntity, typeNames,allInputs} = this.props.entityStore;
+        let {currentEntity, typeNames, allInputs} = this.props.entityStore;
         let {name, fields} = currentEntity || {name: "", fields: []};
         return (
             <div className="spesific-entity">
@@ -36,7 +41,9 @@ export class EntityEditCreate extends React.Component<any> {
                     <FieldList fields={fields} typeNames={typeNames}/>
                 </div>
                 <div className="input-section">
-                    <DraggedToolBox tools={allInputs}/>
+                    <DraggedToolBox tools={allInputs}
+                                    onToolDroped={this.onInputDroped}
+                                    clearAfterDroped={false}/>
                 </div>
             </div>);
     }
