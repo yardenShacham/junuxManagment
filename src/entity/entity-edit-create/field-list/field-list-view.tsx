@@ -48,7 +48,7 @@ function getEditable(index: any, length: any, field: any, typeNames: any) {
                 }
                 {
                     isInputExist ?
-                        <span onClick={this.removeField.bind(this, field.fieldId)}
+                        <span onClick={this.createField.bind(this, field.fieldId)}
                               className="glyphicon glyphicon-ok"></span>
                         :
                         null

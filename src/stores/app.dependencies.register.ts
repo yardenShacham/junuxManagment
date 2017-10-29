@@ -23,11 +23,93 @@ class entityServiceMock {
 
     allEntities: any
     inputTypes: any
+    usedInputs: any[]
 
     constructor() {
         this.allEntities = {
             Users1: {
-                fields: [1, 2, 5],
+                fields: [{
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 1,
+                        inputType: 1
+                    },
+                    name: "First Name"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 1,
+                        inputType: 1
+                    },
+                    name: "Last Name"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 14,
+                        inputType: 2
+                    },
+                    name: "Age"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 1354,
+                        inputType: 3
+                    },
+                    name: "Is Male"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 1334,
+                        inputType: 4
+                    },
+                    name: "Password"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 1324,
+                        inputType: 6
+                    },
+                    name: "Resume"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 12,
+                        inputType: 7
+                    },
+                    name: "Date of Birth"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 12,
+                        inputType: 8
+                    },
+                    name: "Born time"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 123,
+                        inputType: 9
+                    },
+                    name: "Selected Week"
+                }, {
+                    fieldId: Guid.raw(),
+                    input: {
+                        inputId: 3,
+                        inputType: 10,
+                        subEntityField: {
+                            fields: [{
+                                fieldId: 3,
+                                inputId: 1,
+                                name: "City"
+                            }, {
+                                fieldId: 4,
+                                inputId: 2,
+                                name: "Post Code"
+                            }]
+                        }
+                    },
+                    name: "Location"
+                }],
                 name: "Users"
             }
         }
@@ -43,116 +125,58 @@ class entityServiceMock {
             9: "Days Of Week",
             10: "Sub Entity"
         }
+        this.usedInputs = [{
+            inputId: 1,
+            inputType: 1
+        }, {
+            inputId: 2,
+            inputType: 2
+        }, {
+            inputId: 3,
+            inputType: 10,
+            subEntityField: {
+                fields: [3, 4]
+            }
+        }]
     }
 
     getTypeEnum() {
-        return this.inputTypes;
+        return Promise.resolve(this.inputTypes);
     }
 
     getEnteties(uid: any) {
         return Promise.resolve(this.allEntities);
     }
 
-    addField(){
+    addField(entityId: any, fieldName: string, inputType: number) {
+        this.allEntities[entityId].fields.push({
+            fieldId: Guid.raw(),
+            input: {
+                inputId: Guid.raw(),
+                inputType: inputType
+            },
+            name: fieldName
+        });
+        return Promise.resolve();
+    }
 
+    removeField(entityId: any, fieldId: any) {
+        for (let i = 0; i < this.allEntities[entityId].fields.length; i++) {
+            if (this.allEntities[entityId].fields[i].fieldId === fieldId) {
+                this.allEntities[entityId].fields.splice(i, 1);
+                return Promise.resolve();
+            }
+        }
+        return Promise.reject("");
+    }
+
+    getUsedInputs() {
+        return Promise.resolve(this.usedInputs);
     }
 
     getEntityById(entityId: any) {
         let entity = this.allEntities[entityId];
-        let fields = [{
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 1,
-                inputType: 1
-            },
-            name: "First Name"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 1,
-                inputType: 1
-            },
-            name: "Last Name"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 14,
-                inputType: 2
-            },
-            name: "Age"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 1354,
-                inputType: 3
-            },
-            name: "Is Male"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 1334,
-                inputType: 4
-            },
-            name: "Password"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 1324,
-                inputType: 6
-            },
-            name: "Resume"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 12,
-                inputType: 7
-            },
-            name: "Date of Birth"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 12,
-                inputType: 8
-            },
-            name: "Born time"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 123,
-                inputType: 9
-            },
-            name: "Selected Week"
-        }, {
-            fieldId: Guid.raw(),
-            input: {
-                inputId: 3,
-                inputType: 10,
-                subEntityField: {
-                    fields: [{
-                        fieldId: 3,
-                        inputId: 1,
-                        name: "City"
-                    }, {
-                        fieldId: 4,
-                        inputId: 2,
-                        name: "Post Code"
-                    }]
-                }
-            },
-            name: "Location"
-        }];
-      /*  for (let i = 0; i < 20; i++) {
-            fields.push({
-                fieldId: 100 + i,
-                input: {
-                    inputId: 1,
-                    inputType: 1
-                },
-                name: "First Name " + i
-            });
-        }*/
-        entity.fields = fields;
-        return Promise.resolve(entity);
+        return Promise.resolve(Object.assign({}, entity, {entityId}));
     }
 }
 

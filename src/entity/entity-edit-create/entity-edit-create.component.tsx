@@ -1,6 +1,7 @@
 import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {FieldList} from './field-list';
+import {typeIcon} from './field-list/typeToIcon';
 import {DraggedToolBox} from '../../common/dragged-tool-box';
 
 @inject('entityStore') @observer
@@ -22,8 +23,22 @@ export class EntityEditCreate extends React.Component<any> {
         this.props.entityStore.addInputById(fieldId, input);
     }
 
+
+    transferInputs(inputs: any[]) {
+        return inputs.map((input: any) => {
+            let typeName = this.props.entityStore.typeNames[input.inputType]
+            return {
+                id: input.inputId,
+                inputType: input.inputType,
+                html: <span className={typeIcon[typeName]}></span>
+            }
+        });
+    }
+
     render() {
         let {currentEntity, typeNames, allInputs} = this.props.entityStore;
+        allInputs = this.transferInputs(allInputs);
+
         let {name, fields} = currentEntity || {name: "", fields: []};
         return (
             <div className="spesific-entity">

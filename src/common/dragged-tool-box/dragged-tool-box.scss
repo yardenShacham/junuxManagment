@@ -11,11 +11,11 @@
     width: 60px;
     height: 60px;
     display: flex;
-    background-color: rgba(235, 50, 235, .5);
+    background-color: blue;
     justify-content: center;
     align-items: center;
     &:after {
-      content: 'drag me';
+      content: '';
     }
     &:active {
       cursor: grabbing;

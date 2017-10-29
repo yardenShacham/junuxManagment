@@ -1,6 +1,6 @@
 import * as React from "react";
 import Draggable from 'react-draggable';
-import {isFunction} from 'lodash';
+import {cloneDeep} from 'lodash';
 
 export class DraggedToolBox extends React.Component<any> {
     dropZoneRectInfo: any[]
@@ -80,22 +80,26 @@ export class DraggedToolBox extends React.Component<any> {
     }
 
     generateToolItems(tools: any[], getId?: any) {
-        return tools.map((tool: any, i: number) => {
-            let id = getId ? getId(tool) : tool.id;
-            if (id) {
-                return (
-                    <Draggable
-                        key={i}
-                        position={this.state.draggedPosition}
-                        onStart={this.onStart}
-                        onStop={this.onStop}>
-                        <div id={JSON.stringify(tool)} className="tool-item">{tool.html}</div>
-                    </Draggable>
-                );
-            }
-            else
-                console.error('tool dont have an id or getId');
-        });
+        if (tools) {
+            return tools.map((tool: any, i: number) => {
+                let id = getId ? getId(tool) : tool.id;
+                if (id) {
+                    let copyTool = cloneDeep(tool);
+                    delete copyTool.html;
+                    return (
+                        <Draggable
+                            key={i}
+                            position={this.state.draggedPosition}
+                            onStart={this.onStart}
+                            onStop={this.onStop}>
+                            <div id={JSON.stringify(copyTool)} className="tool-item">{tool.html}</div>
+                        </Draggable>
+                    );
+                }
+                else
+                    console.error('tool dont have an id or getId');
+            });
+        }
     }
 
     render() {

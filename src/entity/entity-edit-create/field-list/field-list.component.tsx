@@ -18,8 +18,8 @@ export class FieldList extends React.Component<any> {
             return <span>{typeNames[field.input.inputType]}</span>
     }
 
-    createField(field: any) {
-
+    createField(fieldId: any) {
+        this.props.entityStore.createField(fieldId);
     }
 
     removeField(fieldId: any) {
@@ -30,7 +30,7 @@ export class FieldList extends React.Component<any> {
     render() {
         return (
             <div className="field-list">
-                {listView.bind(this)()  }
+                {listView.bind(this)()}
             </div>);
     }
 }
