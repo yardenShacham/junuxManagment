@@ -1,7 +1,8 @@
 import {Entity, FieldState} from '../entity';
+import {lifeStyleMethods} from 'jx-core/src/auth-service/lifeStyleMethods';
 import {appInjector} from '../core/appInjector';
 import {action, runInAction, autorun, observable} from 'mobx';
-import {map, reject} from 'lodash';
+import {map, reject, forEach} from 'lodash';
 import * as Guid from 'guid';
 
 
@@ -11,33 +12,103 @@ class EntityStore {
     @observable currentEntity: any
     @observable typeNames: any
     @observable allInputs: any[] = []
+    initProcess: any
 
     constructor(initialStore: any) {
-        appInjector.get('entityService').getTypeEnum()
-            .then((typeEnum: any) => this.typeNames = typeEnum);
-        this.getAllInputs();
+        this.initProcess = appInjector.get('authService').waitForCurrentUser().then((user: any) => {
+            return this.onUserSignIn(user);
+        }).catch((error: any) => {
+            appInjector.get('authService').addLifeStyleCallback(lifeStyleMethods.onSignIn, this.onUserSignIn);
+        });
+
+    }
+
+    onUserSignIn(user: any) {
+        if (!this.typeNames) {
+            let tasks = [];
+            let entityService = appInjector.get('entityService');
+            entityService.initConnetedUser(user);
+            tasks.push(entityService.getInputTypeEnum()
+                .then((typeEnum: any) => {
+                    runInAction(() => {
+                        this.typeNames = typeEnum;
+                    })
+                }));
+            tasks.push(this.getAllInputs());
+            return Promise.all(tasks).then(() => {
+                return user;
+            });
+        }
     }
 
 
     @action
+    addEditableInput(inputType: any) {
+        this.allInputs.push({
+            inputId: Guid.raw(),
+            inputType: inputType,
+            description: "this is deafult description please enter your own description",
+            state: FieldState.EDITABLE
+        });
+    }
+
+    @action
+    createNewInput(inputId: string, description: string) {
+        let foundInput = this.allInputs.find((i: any) => i.inputId === inputId);
+        if (foundInput) {
+            appInjector.get('entityService').createNewUserInput(foundInput.inputType, description).then(() => {
+                this.getAllInputs();
+            });
+        }
+    }
+
+    @action
     getAllInputs() {
-        appInjector.get('entityService').getUsedInputs()
+        return appInjector.get('entityService').getUsedInputs()
             .then((inputs: any) => {
                 runInAction(() => {
-                    this.allInputs = inputs;
+                    let allInputs = [];
+                    if (inputs) {
+
+                        if (this.allInputs) {
+                            for (let i = 0; i < this.allInputs.length; i++) {
+                                if (this.allInputs[i].input.state === FieldState.EDITABLE) {
+                                    let foundInput = inputs.find((i: any) => i.inputId === this.allInputs[i].inputId);
+                                    if (!foundInput)
+                                        this.allInputs.push(this.allInputs[i]);
+                                }
+                            }
+                        }
+
+                        forEach(inputs, (val: any, key: string) => {
+                            allInputs.push({
+                                inputId: key,
+                                state: FieldState.CREATED,
+                                inputType: val.inputType,
+                                description: val.description
+                            });
+                        });
+
+                    }
+
+                    this.allInputs = allInputs;
                 });
             });
     }
 
     @action
     async getEntities() {
-        let currentUser = await  appInjector.get('authService').waitForCurrentUser();
-        let entities = await  appInjector.get('entityService').getEnteties(currentUser.uid);
-        runInAction(() => {
-            this.entities = map(entities, (val, key) => {
-                return Object.assign({}, val, {entityId: key});
+        await this.initProcess.then(async (user: any) => {
+            let entities = await
+                appInjector.get('entityService').getEnteties(user.uid);
+            runInAction(() => {
+                this.entities = map(entities, (val, key) => {
+                    return Object.assign({}, val, {entityId: key});
+                });
             });
+
         });
+
     }
 
     @action
@@ -93,14 +164,18 @@ class EntityStore {
     }
 
     @action
-    async getEntityById(id: number) {
-        let currentEntity = await appInjector.get('entityService').getEntityById(id);
-        currentEntity.fields = currentEntity.fields.map((field: any) => {
-            field.state = FieldState.CREATED;
-            return field;
-        });
-        runInAction(() => {
-            this.currentEntity = currentEntity;
+    getEntityById(id: number) {
+        this.initProcess.then(async (user: any) => {
+            let currentEntity = await appInjector.get('entityService').getEntityById(id);
+            if (currentEntity) {
+                currentEntity.fields = currentEntity.fields.map((field: any) => {
+                    field.state = FieldState.CREATED;
+                    return field;
+                });
+                runInAction(() => {
+                    this.currentEntity = currentEntity;
+                });
+            }
         });
     }
 

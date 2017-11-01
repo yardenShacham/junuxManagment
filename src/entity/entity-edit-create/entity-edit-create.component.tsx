@@ -1,8 +1,10 @@
 import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {FieldList} from './field-list';
+import {FieldDraggedBox} from './field-dragged-box'
 import {typeIcon} from './field-list/typeToIcon';
 import {DraggedToolBox} from '../../common/dragged-tool-box';
+import {startCase} from 'lodash';
 
 @inject('entityStore') @observer
 export class EntityEditCreate extends React.Component<any> {
@@ -23,16 +25,22 @@ export class EntityEditCreate extends React.Component<any> {
         this.props.entityStore.addInputById(fieldId, input);
     }
 
+    createNewInput(inputType: any) {
+        this.props.entityStore.addEditableInput(inputType);
+    }
 
     transferInputs(inputs: any[]) {
-        return inputs.map((input: any) => {
-            let typeName = this.props.entityStore.typeNames[input.inputType]
+        return inputs ? inputs.map((input: any) => {
             return {
                 id: input.inputId,
                 inputType: input.inputType,
-                html: <span className={typeIcon[typeName]}></span>
+                html: <FieldDraggedBox state={input.state}
+                                       description={input.description}
+                                       inputId={input.inputId}
+                                       iconClassName={typeIcon[input.inputType]}>
+                </FieldDraggedBox>
             }
-        });
+        }) : [];
     }
 
     render() {
@@ -56,9 +64,29 @@ export class EntityEditCreate extends React.Component<any> {
                     <FieldList fields={fields} typeNames={typeNames}/>
                 </div>
                 <div className="input-section">
+                    <div className="create-new-input">
+                        <div className="dropdown">
+                            <button className="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">
+                                Create new input
+                            </button>
+                            <ul className="dropdown-menu">
+                                {
+                                    typeNames ? Object.keys(typeNames).map((key: string, i: number) =>
+                                        <li key={i}><a href="#"
+                                                       onClick={(e: any) => {
+                                                           e.preventDefault();
+                                                           this.createNewInput(key)
+                                                       }}>{startCase(key)}</a>
+                                        </li>
+                                    ) : null
+                                }
+                            </ul>
+                        </div>
+                    </div>
                     <DraggedToolBox tools={allInputs}
                                     onToolDroped={this.onInputDroped}
                                     clearAfterDroped={false}/>
+
                 </div>
             </div>);
     }

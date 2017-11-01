@@ -11,33 +11,36 @@ export class EntityList extends React.Component<any> {
 
     componentDidMount() {
     }
-    goToEdit(entityId:any){
+
+    goToEdit(entityId: any) {
         this.props.history.push(`/entities/${entityId}`);
     }
+
     render() {
         const tableColor = "grey"
         let configurations: Configurations = {
             options: [{
-                sort:{
-                  sortBy:(data:any) => data.name
+                sort: {
+                    sortBy: (data: any) => data.name
                 },
                 header: () => "Entity Name",
                 content: {
                     getValue: (data: any) => data.name
                 }
             }, {
-                sort:{
-                    sortBy:(data:any) => data.name
+                sort: {
+                    sortBy: (data: any) => data.name
                 },
                 header: () => "Total Fields",
                 content: {
-                    getValue: (data: any) => data.fields.length
+                    getValue: (data: any) => data.fields ? data.fields.length : "None"
                 }
             }, {
                 header: () => "",
                 content: {
                     displayValue: (data: any) =>
-                        (<span onClick={this.goToEdit.bind(this,data.entityId)}  className="glyphicon glyphicon-edit"></span>)
+                        (<span onClick={this.goToEdit.bind(this, data.entityId)}
+                               className="glyphicon glyphicon-edit"></span>)
                 }
             }],
 

@@ -1,14 +1,17 @@
 import {StyleService} from '../core/styleService'
 import {appInjector} from '../core/appInjector';
 import {authService, entityService} from 'jx-core/src';
+import {appConfiguration} from '../app.config';
 import * as Guid from 'guid';
 
 export function registerDependencies() {
     return new Promise((resolve, reject) => {
         if (appInjector) {
             appInjector.registerSingleton("styleService", StyleService);
-            appInjector.registerSingleton("authService", authServiceMock);
-            appInjector.registerSingleton("entityService", entityServiceMock);
+            appInjector.registerSingleton("authService",
+                appConfiguration.isTestMode ? authServiceMock : authService);
+            appInjector.registerSingleton("entityService",
+                appConfiguration.isTestMode ? entityServiceMock : entityService, true);
 
             resolve();
         }

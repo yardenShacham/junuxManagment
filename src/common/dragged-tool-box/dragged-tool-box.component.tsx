@@ -89,10 +89,16 @@ export class DraggedToolBox extends React.Component<any> {
                     return (
                         <Draggable
                             key={i}
+                            handle=".handle"
                             position={this.state.draggedPosition}
                             onStart={this.onStart}
                             onStop={this.onStop}>
-                            <div id={JSON.stringify(copyTool)} className="tool-item">{tool.html}</div>
+                            <div id={JSON.stringify(copyTool)} className="tool-item">
+                                <div className="handle">
+                                    <span className="glyphicon glyphicon-move"></span>
+                                </div>
+                                {tool.html}
+                            </div>
                         </Draggable>
                     );
                 }

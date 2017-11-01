@@ -6,12 +6,11 @@
   justify-content: space-around;
   .tool-item {
     // cursor: move; /* fallback if grab cursor is unsupported */
-    cursor: -webkit-grab;
     margin: 10px;
-    width: 60px;
-    height: 60px;
+    max-height: 80px;
     display: flex;
     background-color: blue;
+    border-radius: 10px;
     justify-content: center;
     align-items: center;
     &:after {
@@ -21,6 +20,16 @@
       cursor: grabbing;
       cursor: -moz-grabbing;
       cursor: -webkit-grabbing;
+    }
+    .handle {
+      width: 10%;
+      font-size: 18px;
+      margin-top: 2px;
+      text-align: center;
+      cursor: -webkit-grab;
+      position: absolute;
+      right: 0px;
+      top: 0px;
     }
   }
 }

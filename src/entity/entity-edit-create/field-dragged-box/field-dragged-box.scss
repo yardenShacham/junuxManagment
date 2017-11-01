@@ -1,0 +1,30 @@
+.field-box-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  &.created {
+    .icon-section {
+      flex: 20%;
+      margin-left: 5px;
+    }
+    .description-section {
+      flex: 80%;
+      color: white;
+    }
+  }
+  &.editable {
+    .icon-section {
+      flex: 10%;
+      margin-left: 5px;
+    }
+    .description-section {
+      flex: 80%;
+      margin: 2px;
+      color: black;
+    }
+    .ok-section {
+      flex: 10%;
+    }
+  }
+
+}

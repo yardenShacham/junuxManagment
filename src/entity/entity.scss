@@ -20,6 +20,26 @@
     }
     .input-section {
       flex: 40%;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      .create-new-input {
+        flex: 13%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        button {
+          width: 180px;
+          margin-bottom: 10px;
+        }
+        .dropdown-menu {
+          width: 180px;
+          margin-top: -9px;
+        }
+      }
+      .tool-box-container {
+        flex: 80%;
+      }
     }
   }
 
