@@ -47,9 +47,16 @@ class EntityStore {
         this.allInputs.push({
             inputId: Guid.raw(),
             inputType: inputType,
-            description: "this is deafult description please enter your own description",
+            description: "",
             state: FieldState.EDITABLE
         });
+    }
+
+    @action
+    ChangeInputEditMode(inputId: any) {
+        let index = this.allInputs.findIndex((i: any) => i.inputId === inputId);
+        if (index !== -1)
+            this.allInputs[index].state = FieldState.EDITABLE;
     }
 
     @action
@@ -57,6 +64,19 @@ class EntityStore {
         let foundInput = this.allInputs.find((i: any) => i.inputId === inputId);
         if (foundInput) {
             appInjector.get('entityService').createNewUserInput(foundInput.inputType, description).then(() => {
+                foundInput.isOnCreate = true;
+                this.getAllInputs();
+            });
+        }
+    }
+
+    @action
+    removeUsedInput(input: any) {
+        if (input.state === FieldState.EDITABLE) {
+            this.allInputs = reject(this.allInputs, (i: any) => i.inputId === input.id);
+        }
+        else if (input.state === FieldState.CREATED) {
+            return appInjector.get('entityService').removeUsedInput(input.id).then(() => {
                 this.getAllInputs();
             });
         }
@@ -72,10 +92,8 @@ class EntityStore {
 
                         if (this.allInputs) {
                             for (let i = 0; i < this.allInputs.length; i++) {
-                                if (this.allInputs[i].input.state === FieldState.EDITABLE) {
-                                    let foundInput = inputs.find((i: any) => i.inputId === this.allInputs[i].inputId);
-                                    if (!foundInput)
-                                        this.allInputs.push(this.allInputs[i]);
+                                if (this.allInputs[i].state === FieldState.EDITABLE && !this.allInputs[i].isOnCreate) {
+                                    allInputs.push(this.allInputs[i]);
                                 }
                             }
                         }

@@ -2,6 +2,7 @@ import {StyleService} from '../core/styleService'
 import {appInjector} from '../core/appInjector';
 import {authService, entityService} from 'jx-core/src';
 import {appConfiguration} from '../app.config';
+import {FieldState} from '../entity';
 import * as Guid from 'guid';
 
 export function registerDependencies() {
@@ -26,7 +27,7 @@ class entityServiceMock {
 
     allEntities: any
     inputTypes: any
-    usedInputs: any[]
+    usedInputs: any
 
     constructor() {
         this.allEntities = {
@@ -117,30 +118,18 @@ class entityServiceMock {
             }
         }
         this.inputTypes = {
-            1: "Text",
-            2: "Number",
-            3: "Checkbox",
-            4: "Password",
-            5: "Radio",
-            6: "File",
-            7: "Date",
-            8: "Time",
-            9: "Days Of Week",
-            10: "Sub Entity"
+            "checkbox": 3,
+            "date": 7,
+            "daysOfWeek": 9,
+            "file": 6,
+            "number": 2,
+            "password": 4,
+            "radio": 5,
+            "subEntity": 10,
+            "text": 1,
+            "time": 8
         }
-        this.usedInputs = [{
-            inputId: 1,
-            inputType: 1
-        }, {
-            inputId: 2,
-            inputType: 2
-        }, {
-            inputId: 3,
-            inputType: 10,
-            subEntityField: {
-                fields: [3, 4]
-            }
-        }]
+        this.usedInputs = {};
     }
 
     getTypeEnum() {
@@ -173,8 +162,33 @@ class entityServiceMock {
         return Promise.reject("");
     }
 
+    createNewUserInput(iType: string, desc: string) {
+        this.usedInputs[Guid.raw()] = {
+            inputType: iType,
+            state: FieldState.CREATED,
+            description: desc
+        };
+
+        return Promise.resolve();
+    }
+
+    removeUsedInput(inputId: any) {
+        if (this.usedInputs[inputId])
+            delete this.usedInputs[inputId];
+
+        return Promise.resolve();
+    }
+
     getUsedInputs() {
         return Promise.resolve(this.usedInputs);
+    }
+
+    initConnetedUser(user: any) {
+
+    }
+
+    getInputTypeEnum() {
+        return Promise.resolve(this.inputTypes);
     }
 
     getEntityById(entityId: any) {

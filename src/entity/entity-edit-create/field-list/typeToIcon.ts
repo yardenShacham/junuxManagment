@@ -1,12 +1,12 @@
 export const typeIcon = {
-    "Text": 'glyphicon glyphicon-text-size',
-    "Number": 'icon-number',
-    "Checkbox": 'glyphicon glyphicon-check',
-    "Password": 'glyphicon glyphicon-lock',
-    "Radio": '',
-    "File": 'glyphicon glyphicon-file',
-    "Date": 'glyphicon glyphicon-calendar',
-    "Time": 'glyphicon glyphicon-time',
-    "Days Of Week": 'dayOfWeek-icon',
-    "Sub Entity": 'glyphicon glyphicon-folder-open'
+    "text": 'glyphicon glyphicon-text-size',
+    "bumber": 'icon-number',
+    "checkbox": 'glyphicon glyphicon-check',
+    "password": 'glyphicon glyphicon-lock',
+    "radio": '',
+    "file": 'glyphicon glyphicon-file',
+    "date": 'glyphicon glyphicon-calendar',
+    "time": 'glyphicon glyphicon-time',
+    "daysOfWeek": 'dayOfWeek-icon',
+    "subEntity": 'glyphicon glyphicon-folder-open'
 }

@@ -1,21 +1,40 @@
+:root {
+  --visibility: hidden
+}
+
 .field-box-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   &.created {
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
     .icon-section {
       flex: 20%;
-      margin-left: 5px;
+      margin-left: 10px;
+      font-size: 20px;
     }
     .description-section {
       flex: 80%;
       color: white;
+      margin: 17px;
+    }
+    .glyphicon-edit {
+      position: absolute;
+      bottom: 8px;
+      right: 5px;
+      font-size: 20px;
+      top: auto;
+      visibility: var(--visibility);
+      cursor: pointer;
     }
   }
   &.editable {
     .icon-section {
       flex: 10%;
       margin-left: 5px;
+      margin-right: 3px;
+      font-size: 18px;
     }
     .description-section {
       flex: 80%;
@@ -24,6 +43,10 @@
     }
     .ok-section {
       flex: 10%;
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 2px;
+      margin-right: 6px;
     }
   }
 

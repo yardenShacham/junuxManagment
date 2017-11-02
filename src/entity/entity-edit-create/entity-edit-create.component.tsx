@@ -5,6 +5,7 @@ import {FieldDraggedBox} from './field-dragged-box'
 import {typeIcon} from './field-list/typeToIcon';
 import {DraggedToolBox} from '../../common/dragged-tool-box';
 import {startCase} from 'lodash';
+import {FieldState} from '../entity';
 
 @inject('entityStore') @observer
 export class EntityEditCreate extends React.Component<any> {
@@ -29,10 +30,17 @@ export class EntityEditCreate extends React.Component<any> {
         this.props.entityStore.addEditableInput(inputType);
     }
 
+    removeInput(input: any) {
+        this.props.entityStore.removeUsedInput(input);
+    }
+
     transferInputs(inputs: any[]) {
         return inputs ? inputs.map((input: any) => {
             return {
                 id: input.inputId,
+                state: input.state,
+                handle: input.state === FieldState.EDITABLE ? 'none' : null,
+                styles: {maxWidth: input.state === FieldState.CREATED ? '170px' : '200px'},
                 inputType: input.inputType,
                 html: <FieldDraggedBox state={input.state}
                                        description={input.description}
@@ -84,6 +92,8 @@ export class EntityEditCreate extends React.Component<any> {
                         </div>
                     </div>
                     <DraggedToolBox tools={allInputs}
+                                    removeToolItem={this.removeInput.bind(this)}
+                                    styles={{backgroundColor: 'crimson'}}
                                     onToolDroped={this.onInputDroped}
                                     clearAfterDroped={false}/>
 

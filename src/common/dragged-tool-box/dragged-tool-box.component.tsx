@@ -1,6 +1,7 @@
 import * as React from "react";
 import Draggable from 'react-draggable';
-import {cloneDeep} from 'lodash';
+import {cloneDeep, reject, forEach} from 'lodash';
+import {appInjector} from '../../core/appInjector';
 
 export class DraggedToolBox extends React.Component<any> {
     dropZoneRectInfo: any[]
@@ -26,6 +27,16 @@ export class DraggedToolBox extends React.Component<any> {
             }
         };
 
+        this.setStyles(this.props.styles);
+    }
+
+    setStyles(styles: any) {
+        if (styles) {
+            forEach(styles, (val: any, key: string) => {
+                appInjector.get("styleService")
+                    .setStyleListener(`--${key}`, () => val);
+            });
+        }
     }
 
     isBetween(dropZonePosition: any) {
@@ -57,6 +68,8 @@ export class DraggedToolBox extends React.Component<any> {
                 data.node.remove();
             }
         }
+        appInjector.get("styleService")
+            .setStyleListener("--overflowY", () => "scroll");
     }
 
     onStart = (e: any, data: any) => {
@@ -64,6 +77,8 @@ export class DraggedToolBox extends React.Component<any> {
             x: data.x,
             y: data.y
         }
+        appInjector.get("styleService")
+            .setStyleListener("--overflowY", () => "visible");
     }
 
     getDropzonesRectInfo() {
@@ -79,6 +94,7 @@ export class DraggedToolBox extends React.Component<any> {
         return dropZonePositions;
     }
 
+
     generateToolItems(tools: any[], getId?: any) {
         if (tools) {
             return tools.map((tool: any, i: number) => {
@@ -89,13 +105,13 @@ export class DraggedToolBox extends React.Component<any> {
                     return (
                         <Draggable
                             key={i}
-                            handle=".handle"
+                            handle={tool.handle}
                             position={this.state.draggedPosition}
                             onStart={this.onStart}
                             onStop={this.onStop}>
-                            <div id={JSON.stringify(copyTool)} className="tool-item">
-                                <div className="handle">
-                                    <span className="glyphicon glyphicon-move"></span>
+                            <div id={JSON.stringify(copyTool)} style={tool.styles} className="tool-item">
+                                <div onClick={() => this.props.removeToolItem(tool)} className="remove-box">
+                                    <span className="glyphicon glyphicon-remove"></span>
                                 </div>
                                 {tool.html}
                             </div>
@@ -109,10 +125,10 @@ export class DraggedToolBox extends React.Component<any> {
     }
 
     render() {
-        const {tools} = this.props;
+        const {tools, getId} = this.props;
         return (
             <div className="tool-box-container">
-                {this.generateToolItems(tools)}
+                {this.generateToolItems(tools, getId)}
             </div>);
     }
 }

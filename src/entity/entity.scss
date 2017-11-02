@@ -20,11 +20,12 @@
     }
     .input-section {
       flex: 40%;
-      min-height: 85vh;
+      min-height: 70vh;
+      max-height: 78vh;
       display: flex;
       flex-direction: column;
       .create-new-input {
-        flex: 13%;
+        flex: 23%;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
@@ -39,57 +40,76 @@
       }
       .tool-box-container {
         flex: 80%;
-      }
-    }
-  }
-
-  .entity-list {
-    h2 {
-      color: white;
-    }
-    .dynamic-table {
-      width: 75%;
-      .content {
-        .cell {
-          margin-top: 5px;
+        overflow-y: var(--overflowY);
+        padding-right: 5px;
+        &::-webkit-scrollbar-track {
+         // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          border-radius: 10px;
+        }
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          height: 50px;
+          background-image: -webkit-gradient(linear,
+                  left bottom,
+                  left top,
+                  color-stop(0.44, rgb(122, 153, 217)),
+                  color-stop(0.72, rgb(73, 125, 189)),
+                  color-stop(0.86, rgb(28, 58, 148)));
         }
       }
-      .glyphicon-edit {
-        font-size: 20px;
-        cursor: pointer;
+    }
+
+    .entity-list {
+      h2 {
+        color: white;
+      }
+      .dynamic-table {
+        width: 75%;
+        .content {
+          .cell {
+            margin-top: 5px;
+          }
+        }
+        .glyphicon-edit {
+          font-size: 20px;
+          cursor: pointer;
+        }
       }
     }
   }
-}
 
-.icon-number {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-}
+  .icon-number {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+  }
 
-.icon-number:after {
-  content: '123';
-  font-weight: bold;
-}
+  .icon-number:after {
+    content: '123';
+    font-weight: bold;
+  }
 
-.dayOfWeek-icon {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-}
+  .dayOfWeek-icon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+  }
 
-.dayOfWeek-icon:after {
-  content: '';
-  width: 2px;
-  background-color: black;
-  padding: 1px;
+  .dayOfWeek-icon:after {
+    content: '';
+    width: 2px;
+    background-color: black;
+    padding: 1px;
+  }
 }
