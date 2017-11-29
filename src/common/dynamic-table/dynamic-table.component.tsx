@@ -136,7 +136,7 @@ export class DynamicTable extends React.Component<any> {
                     setSpesificStyle("cellBorderLeft", styles.content.cell.borderLeft);
                     setSpesificStyle("cellBorderRight", styles.content.cell.borderRight);
                     setSpesificStyle("cellTextAlign", styles.content.cell.textAlign);
-
+                    setSpesificStyle("cellMargin", styles.content.cell.cellMargin);
                 }
             }
         }

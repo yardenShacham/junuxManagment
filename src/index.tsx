@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {render} from 'react-dom';
-import {Router} from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
+import {RouterStore, syncHistoryWithStore} from 'mobx-react-router';
+import {Router} from 'react-router';
 import {useStrict} from 'mobx';
 import {Provider} from 'mobx-react';
 import {getStores} from './stores';
@@ -11,14 +12,18 @@ import {ErrorPage} from "./common/errorPage";
 useStrict(true);
 
 startApp().then((success: any) => {
-    const history = createBrowserHistory();
-
-    if (location.pathname === '/') {
+    const browserHistory = createBrowserHistory();
+    const routingStore = new RouterStore();
+    /*if (location.pathname === '/') {
         history.push("/home");
-    }
-
+    }*/
+    let defaultStores = {
+        routing: routingStore
+    };
+    const history = syncHistoryWithStore(browserHistory, routingStore);
     if (success) {
         getStores().then((stores: any) => {
+            stores = Object.assign({}, defaultStores, stores);
             render(
                 <Provider {...stores}>
                     <Router history={history}>

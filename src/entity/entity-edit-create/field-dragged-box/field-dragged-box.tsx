@@ -25,7 +25,7 @@ export class FieldDraggedBox extends React.Component<any> {
 
     submitInput(inputId: string) {
         let desc = this.state.desc;
-        this.props.entityStore.createNewInput(inputId, desc);
+        this.props.entityStore.saveUserInput(inputId, desc);
     }
 
     handleChange = (e: any) => {

@@ -41,6 +41,21 @@ class EntityStore {
         }
     }
 
+    @action
+    saveEntity(entityName: string) {
+        let promise;
+        if (this.currentEntity.entityId)
+            promise = appInjector.get('entityService').updateEntity(this.currentEntity.entityId, {
+                name: entityName
+            });
+        else {
+            promise = appInjector.get('entityService').createEntity({
+                fields: [],
+                name: entityName
+            });
+        }
+        return promise;
+    }
 
     @action
     addEditableInput(inputType: any) {
@@ -60,10 +75,11 @@ class EntityStore {
     }
 
     @action
-    createNewInput(inputId: string, description: string) {
+    saveUserInput(inputId: string, description: string) {
         let foundInput = this.allInputs.find((i: any) => i.inputId === inputId);
         if (foundInput) {
-            appInjector.get('entityService').createNewUserInput(foundInput.inputType, description).then(() => {
+            appInjector.get('entityService')
+                .saveUserInput(foundInput.inputType, description, inputId).then(() => {
                 foundInput.isOnCreate = true;
                 this.getAllInputs();
             });
@@ -164,7 +180,7 @@ class EntityStore {
             name: this.currentEntity.fields[foundIndex].name,
             input: {
                 inputId: input.id,
-                inputType: input.inputType
+                inputType: this.typeNames[input.inputType]
             }
         }
     }
@@ -182,10 +198,22 @@ class EntityStore {
     }
 
     @action
-    getEntityById(id: number) {
-        this.initProcess.then(async (user: any) => {
-            let currentEntity = await appInjector.get('entityService').getEntityById(id);
+    getEntityById(id: any) {
+        return this.initProcess.then(async (user: any) => {
+            let currentEntity;
+            if (id === "new")
+                currentEntity = {
+                    entityId: null,
+                    state: FieldState.EDITABLE,
+                    fields: [],
+                    name: ''
+                };
+            else {
+                currentEntity = await appInjector.get('entityService').getEntityById(id);
+            }
+
             if (currentEntity) {
+                currentEntity.state = currentEntity.state ? currentEntity.state : FieldState.CREATED;
                 currentEntity.fields = currentEntity.fields.map((field: any) => {
                     field.state = FieldState.CREATED;
                     return field;
@@ -193,7 +221,9 @@ class EntityStore {
                 runInAction(() => {
                     this.currentEntity = currentEntity;
                 });
+                return true;
             }
+            return null;
         });
     }
 

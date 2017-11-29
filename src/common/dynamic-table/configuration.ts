@@ -37,7 +37,8 @@ export interface TableStyles {
             borderBottom?: string,
             borderLeft?: string,
             borderRight?: string,
-            textAlign?: string
+            textAlign?: string,
+            cellMargin?: string
         }
     }
 }

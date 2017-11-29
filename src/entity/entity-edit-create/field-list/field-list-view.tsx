@@ -1,22 +1,32 @@
 import {FieldState} from '../../entity';
 import * as React from "react";
-export default  function () {
+
+export default function () {
 
     const {fields, typeNames, onInputDroped} = this.props;
     const length = fields.length;
     return (
         fields.map((field: any, i: number) => {
                 if (field.state === FieldState.CREATED) {
-                    return getCreated.call(this, i, length, field, typeNames);
+                    return getCreated.call(this, i, length, field, reverseObj(typeNames));
                 }
                 else if (field.state === FieldState.EDITABLE) {
-                    return getEditable.call(this, i, length, field, typeNames);
+                    return getEditable.call(this, i, length, field, reverseObj(typeNames));
                 }
             }
         )
     )
 }
 
+function reverseObj(obj: any) {
+    let keys = Object.keys(obj);
+    let newReverseObj: any = {};
+    for (let i = 0; i < keys.length; i++) {
+        let val = obj[keys[i]];
+        newReverseObj[val] = keys[i];
+    }
+    return newReverseObj;
+}
 
 function getCreated(index: any, length: any, field: any, typeNames: any) {
     return (
@@ -41,21 +51,16 @@ function getEditable(index: any, length: any, field: any, typeNames: any) {
                 <span className="glyphicon glyphicon-link"></span>
                 {
                     isInputExist ?
-                        this.getIcon(typeNames, field) :
+                        <span onClick={this.createField.bind(this, field.fieldId)}
+                              className="glyphicon glyphicon-ok"></span>
+                        :
                         <div className={`drop-zone-input drop-zone ${field.fieldId}`}>
                             <span>Drop Input</span>
                         </div>
                 }
-                {
-                    isInputExist ?
-                        <span onClick={this.createField.bind(this, field.fieldId)}
-                              className="glyphicon glyphicon-ok"></span>
-                        :
-                        null
-                }
-                <span onClick={this.removeField.bind(this, field.fieldId)}
-                      className="glyphicon glyphicon-remove"></span>
             </div>
+            <span onClick={this.removeField.bind(this, field.fieldId)}
+                  className="glyphicon glyphicon-remove"></span>
         </div>
     );
 }

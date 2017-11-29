@@ -5,6 +5,9 @@
     display: flex;
     margin-bottom: 20px;
     margin-left: 20px;
+    .entity-edit-section {
+      display: flex;
+    }
     .list-section {
       flex: 60%;
       .add-new-field-container {
@@ -19,13 +22,13 @@
       }
     }
     .input-section {
-      flex: 40%;
+      flex: 30%;
       min-height: 70vh;
-      max-height: 78vh;
+      max-height: 83vh;
       display: flex;
       flex-direction: column;
       .create-new-input {
-        flex: 23%;
+        flex: 14.1%;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
@@ -42,8 +45,10 @@
         flex: 80%;
         overflow-y: var(--overflowY);
         padding-right: 5px;
+        justify-content: space-around;
+        border-radius: 7px;
         &::-webkit-scrollbar-track {
-         // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
           border-radius: 10px;
         }
         &::-webkit-scrollbar {
@@ -78,6 +83,13 @@
           cursor: pointer;
         }
       }
+    }
+  }
+
+  .entity-list {
+    width: 60%;
+    h2 {
+      color: white;
     }
   }
 

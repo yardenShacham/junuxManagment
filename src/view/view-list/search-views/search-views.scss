@@ -1,0 +1,13 @@
+.insert-entity-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  .search-item {
+    min-width: 300px;
+  }
+  .btn-success {
+    width: 130px;
+    font-weight: bold;
+  }
+}

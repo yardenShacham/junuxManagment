@@ -1,0 +1,48 @@
+.view-container {
+  --colNum: 3;
+  --colPren: '33%';
+  --viewWidth: -webkit-fill-available;
+  --viewHeight: -webkit-fill-available
+}
+
+body {
+  overflow: visible;
+}
+
+.view-container {
+  position: relative;
+  height: var(--viewHeight);
+  width: var(--viewWidth);
+  display: grid;
+  grid-template-columns: repeat(var(--colNum), var(--colPren));
+  grid-auto-rows: minmax(1%, auto);
+  color: white;
+  .cell {
+    border: 0.2px solid black;
+    &.collided {
+      background-color: cornflowerblue;
+    }
+  }
+
+  &.intractionable {
+    resize: both;
+    overflow: auto;
+
+    .react-draggable-dragged {
+      .glyphicon {
+        opacity: 1;
+      }
+    }
+    .glyphicon {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      left: 0%;
+      font-size: 30px;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+}

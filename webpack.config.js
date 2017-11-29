@@ -44,11 +44,11 @@ module.exports = {
                 test: /\.(ico|png|gif|jpg|svg)$/i,
                 use: [
                     {
-                        loader:'file-loader',
-                        options:{
-                            name:'[name].[ext]',
-                            outputPath:'src/assets/images',
-                            publicPath:'src/assets/images'
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'src/assets/images',
+                            publicPath: 'src/assets/images'
                         }
                     },
                     'image-webpack-loader'
@@ -90,5 +90,8 @@ module.exports = {
         new CopyWebpackPlugin([
             {from: './src/assets/images', to: 'src/assets/images'}
         ]),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': process.env.NODE_ENV
+        })
     ]
 };

@@ -1,5 +1,5 @@
 .field-list {
-  height: 60.2vh;
+  height: 70.2vh;
   overflow-y: scroll;
   padding-right: 5px;
   &::-webkit-scrollbar-track {
@@ -58,6 +58,9 @@
     height: 90px;
     .glyphicon-link {
       font-size: 20px;
+    }
+    .glyphicon-ok {
+      cursor: pointer;
     }
   }
   .field-list-item {

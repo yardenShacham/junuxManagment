@@ -18,14 +18,14 @@ export class Header extends React.Component<any> {
     signOut = (e: any) => {
         e.preventDefault();
         appInjector.get('authService').signOut().then(() => {
-            let {history, appStore}  = this.props;
+            let {history, appStore} = this.props;
             appStore.updateCurrentUser();
             history.push('./login');
         });
     }
 
     getUserDetailsSection() {
-        let {appStore}  = this.props;
+        let {appStore} = this.props;
         let userDetails = appStore.currentUserNavDetails;
         if (userDetails) {
             let email = userDetails.email;
@@ -34,7 +34,7 @@ export class Header extends React.Component<any> {
                     <span>
                     {email}
                     </span>
-                    <a href="#" style={{marginLeft:"10px"}} onClick={this.signOut}>Sign Out</a>
+                    <a href="#" style={{marginLeft: "10px"}} onClick={this.signOut}>Sign Out</a>
                 </div>
             );
         }
@@ -45,7 +45,7 @@ export class Header extends React.Component<any> {
             <nav className="navbar navbar-default">
                 <div className="container-fluid">
                     <div className="row">
-                        <div style={{paddingLeft: '15px' , width:'100%'}} className="navbar-header">
+                        <div style={{paddingLeft: '15px', width: '100%'}} className="navbar-header">
                             <div className="navbar-brand">
                                 <Link to="/home">Home</Link>
                             </div>
@@ -60,7 +60,19 @@ export class Header extends React.Component<any> {
                                     <li><Link to="/entities/new">Create new entity</Link></li>
                                 </ul>
                             </div>
-                            <div className="navbar-brand" style={{float:'right'}}>
+                            <div className="navbar-brand dropdown">
+                                <div className="dropdown-toggle"
+                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <a href="#">Views</a>
+                                    <span className="caret"></span>
+                                </div>
+                                <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><Link to="/views">Show All Views</Link></li>
+                                    <li><Link to="/views/new/m">Create Mobile View</Link></li>
+                                    <li><Link to="/views/new">Create View</Link></li>
+                                </ul>
+                            </div>
+                            <div className="navbar-brand" style={{float: 'right'}}>
                                 {this.getUserDetailsSection()}
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 export const typeIcon = {
     "text": 'glyphicon glyphicon-text-size',
-    "bumber": 'icon-number',
+    "number": 'icon-number',
     "checkbox": 'glyphicon glyphicon-check',
     "password": 'glyphicon glyphicon-lock',
     "radio": '',

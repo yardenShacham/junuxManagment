@@ -3,8 +3,6 @@ import * as React from 'react';
 import {RegisterModules} from './module.register';
 import {Header} from './common/header';
 import {Routes} from './app.routes';
-import {appInjector} from './core/appInjector';
-import {isUndefined} from "util";
 
 export function startApp() {
     return RegisterModules().then(() => {

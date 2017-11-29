@@ -1,0 +1,35 @@
+.test {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  label {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  button {
+    margin-left: 10px;
+  }
+}
+
+.dd {
+  background-color: red;
+  width: 50px;
+  height: 50px;
+}
+
+.web-view-new {
+  color: white;
+  padding-left: 30px;
+  .wvn-content {
+    display: flex;
+    flex-direction: row;
+    .view-container {
+      flex: 60%;
+    }
+    height: 82vh;
+    .fields {
+      border: 1px solid black;
+      flex: 40%;
+    }
+  }
+}

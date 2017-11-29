@@ -40,6 +40,7 @@ export class EntityList extends React.Component<any> {
                 content: {
                     displayValue: (data: any) =>
                         (<span onClick={this.goToEdit.bind(this, data.entityId)}
+                               style={{cursor: 'pointer'}}
                                className="glyphicon glyphicon-edit"></span>)
                 }
             }],
@@ -59,11 +60,12 @@ export class EntityList extends React.Component<any> {
                         backgroundColor: "transparent",
                         opacity: "",
                         color: "white",
-                        fontSize: "15px",
+                        fontSize: "20px",
                         minHeight: "",
                         borderBottom: `0.5px solid ${tableColor}`,
                         borderLeft: ``,
-                        borderRight: ""
+                        borderRight: "",
+                        cellMargin: "5px 0 0 0"
                     }
                 }
             }

@@ -4,16 +4,35 @@ import {FieldList} from './field-list';
 import {FieldDraggedBox} from './field-dragged-box'
 import {typeIcon} from './field-list/typeToIcon';
 import {DraggedToolBox} from '../../common/dragged-tool-box';
+import {BtnInput} from '../../common/btn-input';
 import {startCase} from 'lodash';
 import {FieldState} from '../entity';
 
-@inject('entityStore') @observer
+@inject('routing', 'entityStore') @observer
 export class EntityEditCreate extends React.Component<any> {
     refs: any
+    nameState: any
 
     componentWillMount() {
-        let entityId = this.props.match.params.id;
-        this.props.entityStore.getEntityById(entityId);
+        this.initComponent(this.props);
+    }
+
+
+
+    componentWillReceiveProps(newProps: any) {
+        this.initComponent(newProps);
+    }
+
+    initComponent(newProps: any) {
+        const {push} = newProps.routing;
+        let entityId = newProps.match.params.id;
+        this.nameState = entityId === "new" ? FieldState.EDITABLE : FieldState.CREATED;
+
+        newProps.entityStore.getEntityById(entityId).then((isFound) => {
+            if (!isFound) {
+                push('/entities');
+            }
+        });
     }
 
     startAddFieldProcess = () => {
@@ -51,6 +70,13 @@ export class EntityEditCreate extends React.Component<any> {
         }) : [];
     }
 
+    createEditEntity = (entityName: string) => {
+        const {push} = this.props.routing;
+        this.props.entityStore.saveEntity(entityName).then((entityId: any) => {
+            push(`/entities/${entityId}`);
+        });
+    }
+
     render() {
         let {currentEntity, typeNames, allInputs} = this.props.entityStore;
         allInputs = this.transferInputs(allInputs);
@@ -59,7 +85,24 @@ export class EntityEditCreate extends React.Component<any> {
         return (
             <div className="spesific-entity">
                 <div className="list-section">
-                    <h2>{name ? `${name} - fields(${fields.length ? fields.length : 'No Fields'})` : ''}</h2>
+                    <h2>
+                        {
+                            this.nameState === FieldState.EDITABLE ?
+                                <div className="entity-edit-section">
+                                    <BtnInput onClick={this.createEditEntity}
+                                              value={name}
+                                              placeholder="Enter Entity name..."
+                                              style={{marginRight: '10px', marginTop: '1px'}}
+                                              inputStyle={{width: '215px', fontWeight: 'bold'}}
+                                              btnLabelName="Save"/>
+                                    <span>{` - fields(${fields.length ? fields.length : 'No Fields'})`}</span>
+                                </div>
+                                : <span>
+                                    <span> {name}</span>
+                                    <span>{` - fields(${fields.length ? fields.length : 'No Fields'})`}</span>
+                              </span>
+                        }
+                    </h2>
                     <div className="add-new-field-container">
                         <button type="button"
                                 onClick={this.startAddFieldProcess}

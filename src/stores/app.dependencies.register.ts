@@ -1,6 +1,6 @@
 import {StyleService} from '../core/styleService'
 import {appInjector} from '../core/appInjector';
-import {authService, entityService} from 'jx-core/src';
+//import {authService, entityService} from 'jx-core/src';
 import {appConfiguration} from '../app.config';
 import {FieldState} from '../entity';
 import * as Guid from 'guid';
@@ -10,9 +10,11 @@ export function registerDependencies() {
         if (appInjector) {
             appInjector.registerSingleton("styleService", StyleService);
             appInjector.registerSingleton("authService",
-                appConfiguration.isTestMode ? authServiceMock : authService);
+                appConfiguration.isTestMode ? authServiceMock : {});
             appInjector.registerSingleton("entityService",
-                appConfiguration.isTestMode ? entityServiceMock : entityService, true);
+                appConfiguration.isTestMode ? entityServiceMock : {}, true);
+            appInjector.registerSingleton("viewsService",
+                appConfiguration.isTestMode ? viewsServiceMock : {});
 
             resolve();
         }
@@ -22,6 +24,28 @@ export function registerDependencies() {
     });
 }
 
+class viewsServiceMock {
+    allViews = [{
+        viewId: Guid.raw(),
+        name: 'Create new User',
+        relatedEntitiesIds: ["Users1", "2"],
+        content: {}
+    }, {
+        viewId: Guid.raw(),
+        name: 'Watch new User',
+        relatedEntitiesIds: [3, "Users1"],
+        content: {}
+    }]
+
+    getViews(entityId?: any) {
+        return Promise.resolve(this.allViews);
+    }
+
+    removeView(viewId: any) {
+        this.allViews = this.allViews.filter((v: any) => v.viewId !== viewId);
+        return Promise.resolve();
+    }
+}
 
 class entityServiceMock {
 
@@ -141,7 +165,7 @@ class entityServiceMock {
     }
 
     addField(entityId: any, fieldName: string, inputType: number) {
-        this.allEntities[entityId].fields.push({
+        this.allEntities[entityId].fields.unshift({
             fieldId: Guid.raw(),
             input: {
                 inputId: Guid.raw(),
@@ -162,8 +186,12 @@ class entityServiceMock {
         return Promise.reject("");
     }
 
-    createNewUserInput(iType: string, desc: string) {
-        this.usedInputs[Guid.raw()] = {
+    saveUserInput(iType: string, desc: string, inputId: any) {
+
+        if (!this.usedInputs[inputId])
+            inputId = Guid.raw();
+
+        this.usedInputs[inputId] = {
             inputType: iType,
             state: FieldState.CREATED,
             description: desc
@@ -177,6 +205,22 @@ class entityServiceMock {
             delete this.usedInputs[inputId];
 
         return Promise.resolve();
+    }
+
+    updateEntity(entityId: any, entityInfo: any) {
+        if (this.allEntities[entityId] && entityInfo && entityInfo.name) {
+            this.allEntities[entityId] = entityInfo.name;
+        }
+        return Promise.resolve(entityId);
+    }
+
+    createEntity(entityInfo: any) {
+        let entityId = null;
+        if (entityInfo && entityInfo.name) {
+            entityId = Guid.raw();
+            this.allEntities[entityId] = entityInfo;
+        }
+        return Promise.resolve(entityId);
     }
 
     getUsedInputs() {
@@ -193,6 +237,9 @@ class entityServiceMock {
 
     getEntityById(entityId: any) {
         let entity = this.allEntities[entityId];
+        if (!entity)
+            return Promise.resolve(null);
+
         return Promise.resolve(Object.assign({}, entity, {entityId}));
     }
 }

@@ -1,0 +1,12 @@
+.btn-input-container {
+  position: relative;
+  .btn {
+    position: absolute;
+    right: 3px;
+    top: 3.4px;
+    height: 80%;
+    .btn-input-label-name {
+      font-weight: bold;
+    }
+  }
+}

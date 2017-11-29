@@ -23,6 +23,7 @@
   --backgroundColor: transparent;
   --opacity: 1;
   --cellBorderLeft: none;
+  --cellMargin: 0px 0px 0px 0px;
   --cellBorderRight: none;
   --cellBorderBottom: var(--borderSidesRull);
 }
@@ -65,7 +66,8 @@
       border-left: var(--cellBorderLeft);
       border-right: var(--cellBorderRight);
       color: var(--color);
-      font-size: var(--fontSize);;
+      font-size: var(--fontSize);
+      margin: var(--cellMargin);
       width: 100%;
       text-align: var(--cellTextAlign);
     }
