@@ -23,7 +23,11 @@ export class WebView extends React.Component<any> {
     }
 
     componentDidMount() {
+        document.body.classList.add('emtpty-background');
+    }
 
+    componentWillUnmount() {
+        document.body.classList.remove('emtpty-background');
     }
 
     getCellCollisions = (e: any) => {
