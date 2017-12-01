@@ -1,0 +1,53 @@
+.intractionable {
+  position: relative;
+  width: fit-content;
+  padding: 2px;
+  border: 1px solid black;
+  border-radius: 3px;
+  .content{
+    display: flex;
+    flex-direction: column;
+  }
+  .content > * {
+    cursor: move;
+    flex: 1;
+  }
+  .resizer {
+    position: absolute;
+    &:after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      background-color: #fff;
+      border: 1px solid #3899ec;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      margin-top: -5px;
+      margin-right: -5px;
+    }
+
+    &.right {
+      width: 5px;
+      top: 4px;
+      bottom: 4px;
+      right: -2.5px;
+      cursor: ew-resize;
+    }
+    &.bottom {
+      height: 5px;
+      left: 4px;
+      right: 4px;
+      bottom: -4.5px;
+      cursor: ns-resize;
+    }
+    &.both {
+      width: 5px;
+      bottom: -1.5px;
+      right: -1.5px;
+      cursor: nw-resize;
+    }
+
+  }
+}

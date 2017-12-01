@@ -1,7 +1,8 @@
 import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {ViewContainer} from '../../common/view-container';
-import Draggable from 'react-draggable';
+import {Intractionable} from '../../common/intractionable';
+
 
 @inject('viewsStore') @observer
 export class WebView extends React.Component<any> {
@@ -13,8 +14,8 @@ export class WebView extends React.Component<any> {
         this.state = {
             config: {
                 gridSize: {
-                    totalCoulmns: 50,
-                    totalRows: 50
+                    totalCoulmns: 15,
+                    totalRows: 15
                 },
                 isIntractionable: false
             }
@@ -26,7 +27,7 @@ export class WebView extends React.Component<any> {
     }
 
     getCellCollisions = (e: any) => {
-        this.state.config.getCellCollisions(e.target);
+        let collisions = this.state.config.getCellCollisions(e.target);
     }
 
     render() {
@@ -36,10 +37,19 @@ export class WebView extends React.Component<any> {
                 <div className="wvn-content">
                     <ViewContainer config={this.state.config}/>
                     <div className="fields">
-                        <Draggable
+                      {/*  <Intractionable
                             onDrag={this.getCellCollisions}>
-                            <div className="dd"></div>
-                        </Draggable>
+                            <button>Submit</button>
+                        </Intractionable>*/}
+                        <Intractionable
+                            onDrag={this.getCellCollisions}
+                            onResize={this.getCellCollisions}>
+                            <input type="text"/>
+                        </Intractionable>
+                      {/*  <Intractionable
+                            onDrag={this.getCellCollisions}>
+                            <label>First Name</label>
+                        </Intractionable>*/}
                     </div>
                 </div>
             </div>);

@@ -1,4 +1,5 @@
 import * as React from "react";
+const encryptor = require('simple-encryptor')("mKeymKeymKeymKey");
 import {ViewConfiguration} from './view-configuration';
 import {appInjector} from '../../core/appInjector';
 import Draggable from 'react-draggable';
@@ -6,6 +7,7 @@ import Draggable from 'react-draggable';
 export class ViewContainer extends React.Component<any> {
 
     state: any
+    refs: any
     props: any
 
     constructor() {
@@ -13,7 +15,7 @@ export class ViewContainer extends React.Component<any> {
     }
 
     componentDidMount() {
-        this.props.config.getCellCollisions = this.getCellCollisions;
+        this.props.config.getCellCollisions = this.getCellCollisions.bind(this);
         this.setGridStyles(this.props.config.gridSize.totalCoulmns);
     }
 
@@ -22,8 +24,10 @@ export class ViewContainer extends React.Component<any> {
         for (let i = 0; i < gridSize.totalRows; i++) {
 
             for (let j = 0; j < gridSize.totalCoulmns; j++) {
+                let key = `[${i},${j}]`;
+                let en = encryptor.encrypt(key);
                 cells.push(
-                    <div key={`[${i},${j}]`} id={`[${i},${j}]`} className="cell"></div>
+                    <div key={key} id={en} className="cell"></div>
                 )
             }
         }
@@ -51,10 +55,34 @@ export class ViewContainer extends React.Component<any> {
         }
     }
 
-    getCellCollisions(dragedObj: any) {
-        debugger
-        //calc
-        return ["3,4", "1,2"];
+    getCellCollisions = (dragedObj: any) => {
+        let cellCollisions = [];
+        let draggedRect = dragedObj.getBoundingClientRect();
+        let cells = this.refs.vcNode.children;
+        for (let i = 0; i < cells.length; i++) {
+            let cellRect = cells[i].getBoundingClientRect();
+            let isCollied = this.isCellCollide(cellRect, draggedRect);
+            if (isCollied) {
+                cellCollisions.push(cells[i].id);
+                cells[i].classList.add("collided");
+            }
+            else {
+                cells[i].classList.remove("collided");
+            }
+        }
+
+        return cellCollisions;
+    }
+
+    isCellCollide(cellRect: any, draggedRect: any) {
+        if (cellRect.x < draggedRect.x + draggedRect.width &&
+            cellRect.x + cellRect.width > draggedRect.x &&
+            cellRect.y < draggedRect.y + draggedRect.height &&
+            cellRect.height + cellRect.y > draggedRect.y) {
+            return true;
+        }
+
+        return false;
     }
 
     render() {
