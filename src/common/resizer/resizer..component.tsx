@@ -15,8 +15,8 @@ export class Resizer extends React.Component<any> {
     }
 
     componentDidMount() {
-        const {content, direction} = this.props;
-        this.contentElementNode = document.querySelector(content);
+        const {getContent, direction} = this.props;
+        this.contentElementNode = getContent();
         if (this.contentElementNode) {
 
             this.lisener = this.refs.resizer

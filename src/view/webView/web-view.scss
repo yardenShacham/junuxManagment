@@ -1,20 +1,14 @@
 .emtpty-background {
-  background: azure;
+  background: none
 }
 
 .web-view-new {
   color: #3899ec;
-  padding-left: 30px;
   .wvn-content {
     display: flex;
     flex-direction: row;
-    .view-container {
-      flex: 60%;
-    }
-    height: 82vh;
-    .fields {
-      border: 1px solid black;
-      flex: 40%;
+    .page-content {
+      position: absolute;
     }
   }
 }

@@ -4,21 +4,6 @@
   --viewWidth: -webkit-fill-available;
   --viewHeight: -webkit-fill-available
 }
-label{
-  color: blue;
-  font-size: 40px;
-}
-input{
-  height: 40px;
-}
-button{
-  width:200px;
-  height: 100px;
-  background-color: black;
-}
-body {
-  overflow: visible;
-}
 
 .view-container {
   position: relative;
@@ -29,10 +14,7 @@ body {
   grid-auto-rows: minmax(1%, auto);
   color: white;
   .cell {
-    border: 0.2px solid black;
-    &.collided {
-      background-color: yellow;
-    }
+    border: 1px dotted black;
   }
 
   &.intractionable {

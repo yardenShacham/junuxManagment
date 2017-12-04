@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import {Navbar} from './navbar/navbar.component';
 import {appInjector} from '../../core/appInjector';
 import {inject, observer} from 'mobx-react';
+import {NAVBAR_BRANDS} from './navbar-configuration';
 
 @inject('appStore') @observer
 export class Header extends React.Component<any> {
@@ -29,56 +30,16 @@ export class Header extends React.Component<any> {
         let userDetails = appStore.currentUserNavDetails;
         if (userDetails) {
             let email = userDetails.email;
-            return (
-                <div>
-                    <span>
-                    {email}
-                    </span>
-                    <a href="#" style={{marginLeft: "10px"}} onClick={this.signOut}>Sign Out</a>
-                </div>
-            );
+            return [
+                <span key={0}>{email}</span>,
+                <a key={1} href="#" style={{marginLeft: "10px"}} onClick={this.signOut}>Sign Out</a>
+            ];
         }
     }
 
     render() {
         return (
-            <nav className="navbar navbar-default">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div style={{paddingLeft: '15px', width: '100%'}} className="navbar-header">
-                            <div className="navbar-brand">
-                                <Link to="/home">Home</Link>
-                            </div>
-                            <div className="navbar-brand dropdown">
-                                <div className="dropdown-toggle"
-                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <a href="#">Entities</a>
-                                    <span className="caret"></span>
-                                </div>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><Link to="/entities">All Entities</Link></li>
-                                    <li><Link to="/entities/new">Create new entity</Link></li>
-                                </ul>
-                            </div>
-                            <div className="navbar-brand dropdown">
-                                <div className="dropdown-toggle"
-                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <a href="#">Views</a>
-                                    <span className="caret"></span>
-                                </div>
-                                <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><Link to="/views">Show All Views</Link></li>
-                                    <li><Link to="/views/new/m">Create Mobile View</Link></li>
-                                    <li><Link to="/views/new">Create View</Link></li>
-                                </ul>
-                            </div>
-                            <div className="navbar-brand" style={{float: 'right'}}>
-                                {this.getUserDetailsSection()}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+            <Navbar brands={NAVBAR_BRANDS} userDetails={this.getUserDetailsSection()}/>
         );
     }
 }

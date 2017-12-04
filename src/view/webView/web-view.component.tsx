@@ -2,6 +2,7 @@ import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {ViewContainer} from '../../common/view-container';
 import {Intractionable} from '../../common/intractionable';
+import {ActionsMenu} from '../../common/actions-menu';
 
 
 @inject('viewsStore') @observer
@@ -37,23 +38,10 @@ export class WebView extends React.Component<any> {
     render() {
         return (
             <div className="web-view-new">
-                <h2>Create Web view</h2>
                 <div className="wvn-content">
                     <ViewContainer config={this.state.config}/>
-                    <div className="fields">
-                      {/*  <Intractionable
-                            onDrag={this.getCellCollisions}>
-                            <button>Submit</button>
-                        </Intractionable>*/}
-                        <Intractionable
-                            onDrag={this.getCellCollisions}
-                            onResize={this.getCellCollisions}>
-                            <input type="text"/>
-                        </Intractionable>
-                      {/*  <Intractionable
-                            onDrag={this.getCellCollisions}>
-                            <label>First Name</label>
-                        </Intractionable>*/}
+                    <div className="page-content">
+                        <ActionsMenu/>
                     </div>
                 </div>
             </div>);

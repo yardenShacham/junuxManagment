@@ -4,25 +4,90 @@ import {Resizer} from '../resizer';
 
 export class Intractionable extends React.Component<any> {
 
+    refs: any;
+    isEditMode: boolean;
+    isMouseInside: boolean
+    state: any
+
     constructor() {
         super();
     }
 
 
+
+    syncMaskSize = (e: any) => {
+        if (this.refs.content) {
+            let rectContent = this.refs.content.getBoundingClientRect();
+            this.refs.mask.style.width = `${rectContent.width}px`;
+            this.refs.mask.style.height = `${rectContent.height}px`;
+            if (e)
+                this.props.onResize(e);
+        }
+    }
+
+    setMouseMode(isMouseInside: boolean) {
+        this.isMouseInside = isMouseInside;
+    }
+
+    moveEditMode() {
+        this.isEditMode = true;
+        this.refs.container.classList.add('edit-mode');
+        this.refs.mask.classList.replace('intractionable-mask-view', 'intractionable-mask');
+    }
+
+    moveViewMode() {
+        this.refs.container.classList.remove('edit-mode');
+        this.refs.mask.classList.replace('intractionable-mask', 'intractionable-mask-view');
+        this.isEditMode = false;
+    }
+
+    changeMode = () => {
+        if (this.isEditMode && !this.isMouseInside) {
+            this.moveViewMode();
+        }
+        else {
+            if (this.isMouseInside) {
+                this.moveEditMode();
+            }
+        }
+    }
+
+    componentDidMount() {
+        this.syncMaskSize(null);
+        this.isEditMode = true;
+        document.addEventListener('click', this.changeMode, null)
+    }
+
     render() {
-        const {onDrag,onResize,children} = this.props;
+        const {onDrag, children} = this.props;
         return (
             <Draggable
-                handle=".content"
+                handle=".intractionable-mask"
                 onDrag={onDrag}>
-                <div className="intractionable">
-                    <div className="content"> {children}</div>
-                    <Resizer content=".content" direction="right" onResize={onResize}></Resizer>
-                    <Resizer content=".content" direction="bottom" onResize={onResize}></Resizer>
-                    <Resizer content=".content" direction="both" onResize={onResize}></Resizer>
+                <div
+                    onMouseEnter={this.setMouseMode.bind(this, true)}
+                    onMouseLeave={this.setMouseMode.bind(this, false)}
+                    onClick={this.moveEditMode.bind(this)}
+                    className="intractionable edit-mode"
+                    ref="container">
+                    <div ref="content" className="content">
+                        {children}
+                    </div>
+                    <div ref="mask" className="intractionable-mask"></div>
+                    <Resizer getContent={() => this.refs.content}
+                             direction="right"
+                             onResize={this.syncMaskSize}>
+                    </Resizer>
+                    <Resizer getContent={() => this.refs.content}
+                             direction="bottom"
+                             onResize={this.syncMaskSize}>
+                    </Resizer>
+                    <Resizer getContent={() => this.refs.content}
+                             direction="both"
+                             onResize={this.syncMaskSize}>
+                    </Resizer>
                 </div>
             </Draggable>
-
         );
     }
 }
