@@ -7,32 +7,36 @@ import {
 import {appInjector} from '../core/appInjector';
 
 class ViewStore {
-    @observable currentViewName: string;
-    @observable selectedEntityId: any;
 
+    constructor(initialStore: any) {
+        this.currentView = null;
+        this.uploadedImages = [];
+        this.getAllViews();
+    }
+
+    @observable allViews;
+    @observable searchViewName: string;
+    @observable selectedEntityId: any;
+    @observable currentView: any
+    @observable uploadedImages: any[]
+
+    //<editor-fold desc="All Views Actions">
     @computed
     get searchedViews() {
         return this.allViews ? this.allViews.filter((view: any) => {
             let isViewRelated = this.selectedEntityId ?
                 view.relatedEntitiesIds.find((i: any) => i === this.selectedEntityId) : true;
 
-            let isContainName = this.currentViewName ? view.name.toLowerCase()
-                .includes(this.currentViewName.toLowerCase()) : true;
+            let isContainName = this.searchViewName ? view.name.toLowerCase()
+                .includes(this.searchViewName.toLowerCase()) : true;
             return isViewRelated && isContainName;
         }) : []
-    }
-
-    @observable allViews;
-
-
-    constructor(initialStore: any) {
-        this.getAllViews();
     }
 
     @action
     searchViews(entityId: any, viewName: string) {
         this.selectedEntityId = entityId;
-        this.currentViewName = viewName;
+        this.searchViewName = viewName;
     }
 
     @action
@@ -49,6 +53,47 @@ class ViewStore {
             });
         });
     }
+
+    //</editor-fold>
+
+    relatedEntitiesIds: any = ["User1"];
+
+    @action
+    getViewById(id: any) {
+        if (id === 'new' && this.relatedEntitiesIds) {
+            this.currentView = this.getDefaultView();
+        }
+        else {
+            let foundView = this.allViews.find((view: any) => view.id === id);
+            if (foundView)
+                this.currentView = foundView;
+        }
+    }
+
+
+    @action
+    uploadImage(imgFile: any) {
+        let savedImg = {
+            fileName: '',
+            mimeType: '',
+            base64: imgFile.result.replace('', '')
+        }
+        appInjector.get('viewsService').uploadImage()
+    }
+
+    getDefaultView() {
+        return {
+            content: {},
+            name: '',
+            relatedEntitiesIds: this.relatedEntitiesIds,
+            viewId: ''
+        };
+    }
+
+    setCurrentEntityId(relatedEntitiesIds: any[]) {
+        this.relatedEntitiesIds = relatedEntitiesIds;
+    }
+
 }
 
 export function getViewStore(initialState: any) {

@@ -4,15 +4,15 @@ import {Resizer} from '../resizer';
 
 export class Intractionable extends React.Component<any> {
 
+    props: any
     refs: any;
     isEditMode: boolean;
     isMouseInside: boolean
     state: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
-
 
 
     syncMaskSize = (e: any) => {
@@ -33,12 +33,14 @@ export class Intractionable extends React.Component<any> {
         this.isEditMode = true;
         this.refs.container.classList.add('edit-mode');
         this.refs.mask.classList.replace('intractionable-mask-view', 'intractionable-mask');
+        this.refs.mask.addEventListener('keyup', this.tryRemove, true);
     }
 
     moveViewMode() {
         this.refs.container.classList.remove('edit-mode');
         this.refs.mask.classList.replace('intractionable-mask', 'intractionable-mask-view');
         this.isEditMode = false;
+        this.refs.mask.removeEventListener('keyup', this.tryRemove, false);
     }
 
     changeMode = () => {
@@ -52,10 +54,28 @@ export class Intractionable extends React.Component<any> {
         }
     }
 
+    setDefaultContentSize() {
+        if (this.props.children.props && this.props.children.props.style) {
+            if (this.props.children.props.style.width) {
+                this.refs.content.style.width = this.props.children.props.style.width;
+            }
+            if (this.props.children.props.style.height) {
+                this.refs.content.style.height = this.props.children.props.style.height;
+            }
+        }
+    }
+
+    tryRemove = (e: any) => {
+        if (e.keyCode === 46 && this.props.onRemove) {
+            this.props.onRemove(e);
+        }
+    }
+
     componentDidMount() {
+        this.setDefaultContentSize();
         this.syncMaskSize(null);
         this.isEditMode = true;
-        document.addEventListener('click', this.changeMode, null)
+        document.addEventListener('click', this.changeMode, null);
     }
 
     render() {
@@ -73,7 +93,7 @@ export class Intractionable extends React.Component<any> {
                     <div ref="content" className="content">
                         {children}
                     </div>
-                    <div ref="mask" className="intractionable-mask"></div>
+                    <div ref="mask" tabIndex={-1} className="intractionable-mask"></div>
                     <Resizer getContent={() => this.refs.content}
                              direction="right"
                              onResize={this.syncMaskSize}>

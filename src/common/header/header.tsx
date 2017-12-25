@@ -8,8 +8,8 @@ import {NAVBAR_BRANDS} from './navbar-configuration';
 export class Header extends React.Component<any> {
     props: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     componentDidMount() {

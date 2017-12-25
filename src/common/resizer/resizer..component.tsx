@@ -10,8 +10,8 @@ export class Resizer extends React.Component<any> {
     startHeight
 
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     componentDidMount() {

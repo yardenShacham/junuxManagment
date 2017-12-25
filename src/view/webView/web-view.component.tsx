@@ -2,6 +2,7 @@ import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {ViewContainer} from '../../common/view-container';
 import {Intractionable} from '../../common/intractionable';
+import {ACTION_CONFIG} from './actionMenu-config';
 import {ActionsMenu} from '../../common/actions-menu';
 
 
@@ -10,8 +11,8 @@ export class WebView extends React.Component<any> {
     state: any
     refs: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             config: {
                 gridSize: {
@@ -24,6 +25,9 @@ export class WebView extends React.Component<any> {
     }
 
     componentDidMount() {
+        if (this.props.match.params.id)
+            this.props.viewsStore.getViewById(this.props.match.params.id);
+
         document.body.classList.add('emtpty-background');
     }
 
@@ -41,7 +45,13 @@ export class WebView extends React.Component<any> {
                 <div className="wvn-content">
                     <ViewContainer config={this.state.config}/>
                     <div className="page-content">
-                        <ActionsMenu/>
+                        <ActionsMenu actions={ACTION_CONFIG}/>
+                        {/* <Intractionable
+                            onDrag={this.getCellCollisions}
+                            onResize={this.getCellCollisions}>
+                            <div style={{backgroundColor: 'red', width: '100px', height: '100px'}}></div>
+                        </Intractionable>*/}
+
                     </div>
                 </div>
             </div>);

@@ -9,6 +9,43 @@
     flex-direction: row;
     .page-content {
       position: absolute;
+      .img-preview {
+        border: 1px solid #e3e3e3;
+        width: 330px;
+        min-height: 206px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        img{
+          width: 330px;
+          min-height: 206px;
+        }
+      }
+      .background-list {
+        .title {
+          margin: 10px;
+          font-size: 15px;
+          position: relative;
+          border-bottom: 1px solid #8092a4;
+          padding-bottom: 5px;
+          color: #2b5672;
+        }
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .apply-background {
+        cursor: pointer;
+        background-color: #3899ec;
+        border-radius: 18px;
+        color: #fff;
+        height: 36px;
+        margin: 20px 40px;
+        justify-content: center;
+        align-items: center;
+        display: inline-flex;
+      }
     }
   }
 }

@@ -18,8 +18,8 @@ export class DynamicTable extends React.Component<any> {
     props: any
     dService: dynamicTableService
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.dService = new dynamicTableService();
     }
 

@@ -6,8 +6,8 @@ import {FieldState} from '../../entity';
 export class FieldDraggedBox extends React.Component<any> {
     state: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             desc: ''
         }

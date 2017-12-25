@@ -3,8 +3,8 @@ import * as React from "react";
 export class BtnInput extends React.Component<any> {
     state: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             txt: ''
         }

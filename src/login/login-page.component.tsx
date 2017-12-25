@@ -8,8 +8,8 @@ export class LoginPage extends React.Component<any> {
     static isPublic = true;
     state: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             errors: []
         }

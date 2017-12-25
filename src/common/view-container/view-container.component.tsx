@@ -1,4 +1,5 @@
 import * as React from "react";
+
 const encryptor = require('simple-encryptor')("mKeymKeymKeymKey");
 import {ViewConfiguration} from './view-configuration';
 import {appInjector} from '../../core/appInjector';
@@ -10,8 +11,8 @@ export class ViewContainer extends React.Component<any> {
     refs: any
     props: any
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     componentDidMount() {

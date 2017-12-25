@@ -3,6 +3,7 @@
     list-style: none;
     li {
       cursor: pointer;
+      position: relative;
       background: linear-gradient(to bottom, white 0%, #eeeeee 100%);
       margin-top: 25px;
       box-shadow: 0 2px 5px 0 rgba(22, 45, 61, 0.58);
@@ -12,29 +13,98 @@
       border-bottom-left-radius: 100px;
       border-bottom-right-radius: 100px;
       border-top-right-radius: 100px;
-      transition: width 1s;
       width: 45px;
+      &.selected-action{
+        rect{
+          fill: #f8a239;
+        }
+      }
+      .selected {
+        position: absolute;
+        top: -4px;
+        left: -13px;
+      }
       .action-container {
-        transition: all 1s;
         white-space: nowrap;
         display: flex;
         margin: 6px;
         height: 45px;
         width: 33px;
         align-items: center;
+        position: relative;
         .action-name {
           display: none;
           margin-left: 5px;
           font-size: 17px;
         }
+        .popup {
+          cursor: default;
+          display: none;
+          overflow: hidden;
+          min-width: 330px;
+          min-height: 600px;
+          background-color: aliceblue;
+          position: absolute;
+          left: 40px;
+          top: 0px;
+          border: 1px solid #e3e3e3;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          border-top-right-radius: 8px;
+          border-left: 6px solid #f8a239;
+          .popup-header {
+            height: 50px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            padding-left: 10px;
+            padding-right: 10px;
+            align-items: center;
+            font-size: 18px;
+            .close-btn {
+              border-radius: 50%;
+              border: 0;
+              background-color: #d3edff;
+              width: 25px;
+              height: 25px;
+              cursor: pointer;
+              svg {
+                fill: #3899ec;
+              }
+            }
+          }
+          .popup-content {
+            flex: 68;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          &.active {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+      &.active {
+        &:hover {
+          width: auto;
+          .action-container {
+            width: auto;
+          }
+          .action-name {
+            display: inline-block;
+          }
+        }
       }
       &:hover {
-        width: auto;
-        .action-container {
-          width: auto;
-        }
-        .action-name {
-          display: inline-block;
+        &:not(.selected-action) {
+          fill: #f8a239;
+          text {
+            fill: #f8a239;
+          }
+          ellipse {
+            stroke: #f8a239;
+          }
         }
       }
     }
