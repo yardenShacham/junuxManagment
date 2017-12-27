@@ -6,7 +6,7 @@
 }
 
 .view-container {
-  position: relative;
+  position: absolute;
   height: var(--viewHeight);
   width: var(--viewWidth);
   display: grid;

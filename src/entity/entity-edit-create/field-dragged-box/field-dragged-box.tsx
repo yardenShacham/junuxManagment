@@ -1,6 +1,6 @@
 import * as React from "react";
 import {inject, observer} from "mobx-react";
-import {FieldState} from '../../entity';
+import {FIELD_STATE} from '../../entity';
 
 @inject('entityStore') @observer
 export class FieldDraggedBox extends React.Component<any> {
@@ -19,7 +19,7 @@ export class FieldDraggedBox extends React.Component<any> {
 
     render() {
         const {state, iconClassName, inputId, description} = this.props;
-        return (state === FieldState.CREATED ? this.getCreated(inputId, iconClassName, description)
+        return (state === FIELD_STATE.CREATED ? this.getCreated(inputId, iconClassName, description)
             : this.getEditable(inputId, iconClassName, description));
     }
 

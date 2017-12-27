@@ -1,3 +1,3 @@
 export const appConfiguration = {
-    isTestMode: true
+    isTestMode: false
 }

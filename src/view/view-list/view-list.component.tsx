@@ -8,6 +8,7 @@ import {confirmAlert} from 'react-confirm-alert';
 export class ViewList extends React.Component<any> {
 
     componentDidMount() {
+        this.props.viewsStore.getAllViews();
     }
 
     tryRemoveView = (viewInfo: any) => {

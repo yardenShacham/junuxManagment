@@ -6,7 +6,7 @@ import {typeIcon} from './field-list/typeToIcon';
 import {DraggedToolBox} from '../../common/dragged-tool-box';
 import {BtnInput} from '../../common/btn-input';
 import {startCase} from 'lodash';
-import {FieldState} from '../entity';
+import {FIELD_STATE} from '../entity';
 
 @inject('routing', 'entityStore') @observer
 export class EntityEditCreate extends React.Component<any> {
@@ -26,7 +26,7 @@ export class EntityEditCreate extends React.Component<any> {
     initComponent(newProps: any) {
         const {push} = newProps.routing;
         let entityId = newProps.match.params.id;
-        this.nameState = entityId === "new" ? FieldState.EDITABLE : FieldState.CREATED;
+        this.nameState = entityId === "new" ? FIELD_STATE.EDITABLE : FIELD_STATE.CREATED;
 
         newProps.entityStore.getEntityById(entityId).then((isFound) => {
             if (!isFound) {
@@ -58,8 +58,8 @@ export class EntityEditCreate extends React.Component<any> {
             return {
                 id: input.inputId,
                 state: input.state,
-                handle: input.state === FieldState.EDITABLE ? 'none' : null,
-                styles: {maxWidth: input.state === FieldState.CREATED ? '170px' : '200px'},
+                handle: input.state === FIELD_STATE.EDITABLE ? 'none' : null,
+                styles: {maxWidth: input.state === FIELD_STATE.CREATED ? '170px' : '200px'},
                 inputType: input.inputType,
                 html: <FieldDraggedBox state={input.state}
                                        description={input.description}
@@ -87,7 +87,7 @@ export class EntityEditCreate extends React.Component<any> {
                 <div className="list-section">
                     <h2>
                         {
-                            this.nameState === FieldState.EDITABLE ?
+                            this.nameState === FIELD_STATE.EDITABLE ?
                                 <div className="entity-edit-section">
                                     <BtnInput onClick={this.createEditEntity}
                                               value={name}

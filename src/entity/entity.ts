@@ -1,12 +1,14 @@
 import {IdNameContainer} from '../app.types';
-export const FieldState = {
+
+export const FIELD_STATE = {
     CREATED: 1,
     EDITABLE: 2
 }
+
 export interface Entity {
-  /*  entityId: any
-    fields: Field[]
-    pages: PageInfo[]*/
+    /*  entityId: any
+      fields: Field[]
+      pages: PageInfo[]*/
 }
 
 export interface PageInfo {

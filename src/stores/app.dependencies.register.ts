@@ -1,27 +1,26 @@
 import {StyleService} from '../core/styleService'
 import {appInjector} from '../core/appInjector';
-//import {authService, entityService} from 'jx-core/src';
+import {getInjector} from 'jx-core';
 import {appConfiguration} from '../app.config';
-import {FieldState} from '../entity';
+import {FIELD_STATE} from '../entity';
 import * as Guid from 'guid';
 
 export function registerDependencies() {
-    return new Promise((resolve, reject) => {
-        if (appInjector) {
+    if (appInjector) {
+        return getInjector().then((injector: any) => {
             appInjector.registerSingleton("styleService", StyleService);
-            appInjector.registerSingleton("authService",
-                appConfiguration.isTestMode ? authServiceMock : {});
-            appInjector.registerSingleton("entityService",
-                appConfiguration.isTestMode ? entityServiceMock : {}, true);
-            appInjector.registerSingleton("viewsService",
-                appConfiguration.isTestMode ? viewsServiceMock : {});
+            appInjector.mergeInjectors(injector);
+            if (appConfiguration.isTestMode) {
+                appInjector.registerSingleton("authService", authServiceMock);
+                appInjector.registerSingleton("entityService", entityServiceMock, true);
+                appInjector.registerSingleton("viewsService", viewsServiceMock);
+            }
+        });
 
-            resolve();
-        }
-        else {
-            reject("rejector has does not exsit or have some problems");
-        }
-    });
+    }
+    else {
+        return Promise.reject("rejector has does not exsit or have some problems");
+    }
 }
 
 class viewsServiceMock {
@@ -193,7 +192,7 @@ class entityServiceMock {
 
         this.usedInputs[inputId] = {
             inputType: iType,
-            state: FieldState.CREATED,
+            state: FIELD_STATE.CREATED,
             description: desc
         };
 

@@ -1,4 +1,4 @@
-import {FieldState} from '../../entity';
+import {FIELD_STATE} from '../../entity';
 import * as React from "react";
 
 export default function () {
@@ -7,10 +7,10 @@ export default function () {
     const length = fields.length;
     return (
         fields.map((field: any, i: number) => {
-                if (field.state === FieldState.CREATED) {
+                if (field.state === FIELD_STATE.CREATED) {
                     return getCreated.call(this, i, length, field, reverseObj(typeNames));
                 }
-                else if (field.state === FieldState.EDITABLE) {
+                else if (field.state === FIELD_STATE.EDITABLE) {
                     return getEditable.call(this, i, length, field, reverseObj(typeNames));
                 }
             }

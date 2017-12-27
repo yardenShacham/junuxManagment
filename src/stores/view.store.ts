@@ -41,16 +41,18 @@ class ViewStore {
 
     @action
     removeView = (viewId: any) => {
-        appInjector.get('viewsService').removeView(viewId)
+        appInjector.get('viewService').removeView(viewId)
             .then(() => this.getAllViews());
     }
 
     @action
     getAllViews() {
-        appInjector.get('viewsService').getViews().then((views: any[]) => {
-            runInAction(() => {
-                this.allViews = views;
-            });
+        appInjector.get('viewService').getViews().then((views: any[]) => {
+            if (views) {
+                runInAction(() => {
+                    this.allViews = views;
+                });
+            }
         });
     }
 
@@ -78,7 +80,7 @@ class ViewStore {
             mimeType: '',
             base64: imgFile.result.replace('', '')
         }
-        appInjector.get('viewsService').uploadImage()
+        appInjector.get('viewService').uploadImage()
     }
 
     getDefaultView() {

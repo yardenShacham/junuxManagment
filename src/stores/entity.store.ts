@@ -1,4 +1,4 @@
-import {Entity, FieldState} from '../entity';
+import {Entity, FIELD_STATE} from '../entity';
 import {lifeStyleMethods} from 'jx-core/src/auth-service/lifeStyleMethods';
 import {appInjector} from '../core/appInjector';
 import {action, runInAction, autorun, observable} from 'mobx';
@@ -27,7 +27,6 @@ class EntityStore {
         if (!this.typeNames) {
             let tasks = [];
             let entityService = appInjector.get('entityService');
-            entityService.initConnetedUser(user);
             tasks.push(entityService.getInputTypeEnum()
                 .then((typeEnum: any) => {
                     runInAction(() => {
@@ -63,7 +62,7 @@ class EntityStore {
             inputId: Guid.raw(),
             inputType: inputType,
             description: "",
-            state: FieldState.EDITABLE
+            state: FIELD_STATE.EDITABLE
         });
     }
 
@@ -71,7 +70,7 @@ class EntityStore {
     ChangeInputEditMode(inputId: any) {
         let index = this.allInputs.findIndex((i: any) => i.inputId === inputId);
         if (index !== -1)
-            this.allInputs[index].state = FieldState.EDITABLE;
+            this.allInputs[index].state = FIELD_STATE.EDITABLE;
     }
 
     @action
@@ -88,10 +87,10 @@ class EntityStore {
 
     @action
     removeUsedInput(input: any) {
-        if (input.state === FieldState.EDITABLE) {
+        if (input.state === FIELD_STATE.EDITABLE) {
             this.allInputs = reject(this.allInputs, (i: any) => i.inputId === input.id);
         }
-        else if (input.state === FieldState.CREATED) {
+        else if (input.state === FIELD_STATE.CREATED) {
             return appInjector.get('entityService').removeUsedInput(input.id).then(() => {
                 this.getAllInputs();
             });
@@ -108,7 +107,7 @@ class EntityStore {
 
                         if (this.allInputs) {
                             for (let i = 0; i < this.allInputs.length; i++) {
-                                if (this.allInputs[i].state === FieldState.EDITABLE && !this.allInputs[i].isOnCreate) {
+                                if (this.allInputs[i].state === FIELD_STATE.EDITABLE && !this.allInputs[i].isOnCreate) {
                                     allInputs.push(this.allInputs[i]);
                                 }
                             }
@@ -117,7 +116,7 @@ class EntityStore {
                         forEach(inputs, (val: any, key: string) => {
                             allInputs.push({
                                 inputId: key,
-                                state: FieldState.CREATED,
+                                state: FIELD_STATE.CREATED,
                                 inputType: val.inputType,
                                 description: val.description
                             });
@@ -149,7 +148,7 @@ class EntityStore {
     removeField(fieldId: any) {
         let foundField = this.findField(fieldId);
         if (foundField) {
-            if (foundField.state === FieldState.EDITABLE) {
+            if (foundField.state === FIELD_STATE.EDITABLE) {
                 this.currentEntity.fields =
                     reject(this.currentEntity.fields, (field: any) => fieldId ? field.fieldId === fieldId : false);
             }
@@ -165,7 +164,7 @@ class EntityStore {
     addFieldName(fieldName: string) {
         this.currentEntity.fields.unshift({
             fieldId: Guid.raw(),
-            state: FieldState.EDITABLE,
+            state: FIELD_STATE.EDITABLE,
             name: fieldName,
             input: null
         });
@@ -204,7 +203,7 @@ class EntityStore {
             if (id === "new")
                 currentEntity = {
                     entityId: null,
-                    state: FieldState.EDITABLE,
+                    state: FIELD_STATE.EDITABLE,
                     fields: [],
                     name: ''
                 };
@@ -213,9 +212,9 @@ class EntityStore {
             }
 
             if (currentEntity) {
-                currentEntity.state = currentEntity.state ? currentEntity.state : FieldState.CREATED;
+                currentEntity.state = currentEntity.state ? currentEntity.state : FIELD_STATE.CREATED;
                 currentEntity.fields = currentEntity.fields.map((field: any) => {
-                    field.state = FieldState.CREATED;
+                    field.state = FIELD_STATE.CREATED;
                     return field;
                 });
                 runInAction(() => {
@@ -239,7 +238,7 @@ class EntityStore {
 
     mergeFields(oldFields: any, currentFields: any) {
         for (let i = 0; i < oldFields.length; i++) {
-            if (oldFields[i].state === FieldState.EDITABLE) {
+            if (oldFields[i].state === FIELD_STATE.EDITABLE) {
 
             }
         }
