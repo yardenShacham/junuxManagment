@@ -1,6 +1,7 @@
 import * as React from "react";
 import {inject, observer} from "mobx-react";
 import {DynamicTable, Configurations} from '../../common/dynamic-table';
+import {DropDownIcon} from '../../common/drop-down-icon';
 
 @inject('entityStore') @observer
 export class EntityList extends React.Component<any> {
@@ -14,6 +15,15 @@ export class EntityList extends React.Component<any> {
 
     goToEdit(entityId: any) {
         this.props.history.push(`/entities/${entityId}`);
+    }
+
+    createNewMobileView() {
+
+    }
+
+    createNewWebView(entityId: any) {
+        //go to view store and create new view that related to this entity
+        //then navigate to the edit mode of the created view
     }
 
     render() {
@@ -34,6 +44,18 @@ export class EntityList extends React.Component<any> {
                 header: () => "Total Fields",
                 content: {
                     getValue: (data: any) => data.fields ? data.fields.length : "None"
+                }
+            }, {
+                header: () => "",
+                content: {
+                    displayValue: (data: any) =>
+                        (<DropDownIcon items={[{
+                            label: "Create Web View",
+                            action: this.createNewWebView.bind(this, data.entityId)
+                        }, {
+                            label: "Create Mobile View",
+                            action: this.createNewMobileView.bind(this, data.entityId)
+                        }]} iconName="modal-window"/>)
                 }
             }, {
                 header: () => "",

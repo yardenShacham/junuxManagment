@@ -11,18 +11,8 @@ export const NAVBAR_BRANDS = [
             linkTo: '/entities/new',
             label: 'Create new entity'
         }]
-    },
-    {
-        dropdownName: 'Views',
-        dropdown: [{
-            linkTo: '/views',
-            label: 'Show All Views'
-        }, {
-            linkTo: '/views/new/m',
-            label: 'Create Mobile View'
-        }, {
-            linkTo: '/views/new',
-            label: 'Create View'
-        }]
+    }, {
+        linkTo: '/views',
+        label: 'Show All Views'
     }
 ]

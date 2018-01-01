@@ -13,7 +13,7 @@ export function registerDependencies() {
             if (appConfiguration.isTestMode) {
                 appInjector.registerSingleton("authService", authServiceMock);
                 appInjector.registerSingleton("entityService", entityServiceMock, true);
-                appInjector.registerSingleton("viewsService", viewsServiceMock);
+                appInjector.registerSingleton("viewService", viewsServiceMock);
             }
         });
 
