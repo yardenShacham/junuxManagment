@@ -1,7 +1,8 @@
 import {StyleService} from '../core/styleService'
 import {appInjector} from '../core/appInjector';
-import {getInjector} from 'jx-core';
 import {appConfiguration} from '../app.config';
+const getInjector =
+    require(!appConfiguration.isDevMode? 'jx-core' : 'jx-core/src').getInjector;
 import {FIELD_STATE} from '../entity';
 import * as Guid from 'guid';
 
